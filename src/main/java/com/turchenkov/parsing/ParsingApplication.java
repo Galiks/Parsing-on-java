@@ -16,11 +16,4 @@ public class ParsingApplication {
 		SpringApplication.run(ParsingApplication.class, args);
 	}
 
-//	@Bean
-//	public CommandLineRunner commandLineRunner(UserRepository userRepository){
-//		return args -> {
-//			User user = new User("Pavel", 21);
-//            userRepository.save(user);
-//		};
-//	}
 }
