@@ -1,6 +1,7 @@
 package com.turchenkov.parsing.parsing;
 
-import com.turchenkov.parsing.model.LetyShops;
+import com.turchenkov.parsing.domains.LetyShops;
+import com.turchenkov.parsing.domains.SiteForParsing;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,7 +31,7 @@ public class LetyShopsParser implements ParserInterface {
         List<String> discounts = new ArrayList<>();
         List<String> names = new ArrayList<>();
         List<String> labels = new ArrayList<>();
-        List<LetyShops> letyShops = new ArrayList<>();
+        List<SiteForParsing> letyShops = new ArrayList<>();
 
         Document document = Jsoup.connect("https://letyshops.com/shops?page=1").get();
 
@@ -66,7 +67,7 @@ public class LetyShopsParser implements ParserInterface {
             }
         }
 
-        for (LetyShops letyShop : letyShops) {
+        for (SiteForParsing letyShop : letyShops) {
             System.out.println(letyShop);
         }
     }
