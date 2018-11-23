@@ -16,16 +16,10 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.net.URLEncoder.encode;
+public class LetyShopsParser implements ParserInterface {
 
-public class Parser {
-    public static void main(String[] args) throws IOException, InterruptedException {
-
-        parsingLetyShops();
-
-    }
-
-    private static void parsingLetyShops() throws IOException, InterruptedException {
+    @Override
+    public void parsing() throws IOException, InterruptedException {
         Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
         Pattern patternForLabel = Pattern.compile("[$%€]|руб");
 
@@ -42,7 +36,7 @@ public class Parser {
 
         Elements elements = document.getElementsByClass("b-pagination__item");
 
-        int maxPage = Integer.parseInt(elements.get(elements.size()-2).text());
+        int maxPage = Integer.parseInt(elements.get(elements.size() - 2).text());
 
         long start = System.currentTimeMillis();
         try {
@@ -65,10 +59,10 @@ public class Parser {
         System.out.println(labels.size() + " : " + discounts.size() + " : " + names.size());
 
 
-        for (int i = 0; i < discounts.size(); i++){
+        for (int i = 0; i < discounts.size(); i++) {
             Matcher matcher = patternForDiscount.matcher(discounts.get(i));
-            if (matcher.find()){
-                letyShops.add(new LetyShops(names.get(i), Double.parseDouble(discounts.get(i).substring(matcher.start(),matcher.end())), labels.get(i)));
+            if (matcher.find()) {
+                letyShops.add(new LetyShops(names.get(i), Double.parseDouble(discounts.get(i).substring(matcher.start(), matcher.end())), labels.get(i)));
             }
         }
 
@@ -77,7 +71,7 @@ public class Parser {
         }
     }
 
-    private static void parsElementsForLetyShops(Pattern patternForLabel, List<String> discounts, List<String> names, List<String> labels, int i) throws IOException {
+    private void parsElementsForLetyShops(Pattern patternForLabel, List<String> discounts, List<String> names, List<String> labels, int i) throws IOException {
         Document document;
         Elements elements;
         document = Jsoup.connect("https://letyshops.com/shops?page=" + i).get();
@@ -104,19 +98,5 @@ public class Parser {
         }
 
         //System.out.println(labels.size() + " : " + discounts.size() + " : " + names.size());
-    }
-
-    //проблема с js
-    private static void parsingСash4brands() throws IOException {
-
-//        Document document = Jsoup.connect("https://cash4brands.ru/cashback/").get();
-//
-//        Elements elements = document.select("section.shops").select("h3[itemprop]");
-//
-//        for (Element element : elements) {
-//            System.out.println(element);
-//        }
-
-
     }
 }
