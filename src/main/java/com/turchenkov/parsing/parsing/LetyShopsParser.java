@@ -19,19 +19,25 @@ import java.util.regex.Pattern;
 
 public class LetyShopsParser implements ParserInterface {
 
+    private String addressOfSite = "https://letyshops.com";
+    private Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    private Pattern patternForLabel = Pattern.compile("[$%€]|руб|");
+    private List<String> discounts = new ArrayList<>();
+    private List<String> names = new ArrayList<>();
+    private List<String> labels = new ArrayList<>();
+    private List<String> pagesOnTheSite = new ArrayList<>();
+    private List<String> images = new ArrayList<>();
+    private List<LetyShops> letyShops = new ArrayList<>();
+
     @Override
     public void parsing() throws IOException, InterruptedException {
-        Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
-        Pattern patternForLabel = Pattern.compile("[$%€]|руб|");
+
 
         int THREADS = 4; // кол-во потоков
         ExecutorService pool = Executors.newFixedThreadPool(THREADS);
         List<Callable<Object>> tasks = new ArrayList<>();
 
-        List<String> discounts = new ArrayList<>();
-        List<String> names = new ArrayList<>();
-        List<String> labels = new ArrayList<>();
-        List<LetyShops> letyShops = new ArrayList<>();
+
 
         Document document = Jsoup.connect("https://letyshops.com/shops?page=1").get();
 
@@ -39,12 +45,11 @@ public class LetyShopsParser implements ParserInterface {
 
         int maxPage = Integer.parseInt(elements.get(elements.size() - 2).text());
 
-        long start = System.currentTimeMillis();
         try {
             for (int i = 1; i <= maxPage; i++) {
                 int finalI = i;
                 tasks.add(() -> {
-                    parsElementsForLetyShops(patternForLabel, discounts, names, labels, finalI);
+                    parsElementsForLetyShops(finalI);
                     return null;
                 });
             }
@@ -52,18 +57,11 @@ public class LetyShopsParser implements ParserInterface {
         } finally {
             pool.shutdown();
         }
-        long finish = System.currentTimeMillis();
-        long timeConsumedMillis = finish - start;
-
-        System.out.println(timeConsumedMillis);
-
-        System.out.println(labels.size() + " : " + discounts.size() + " : " + names.size());
-
 
         for (int i = 0; i < discounts.size(); i++) {
             Matcher matcher = patternForDiscount.matcher(discounts.get(i));
             if (matcher.find()) {
-                letyShops.add(new LetyShops(names.get(i), Double.parseDouble(discounts.get(i).substring(matcher.start(), matcher.end())), labels.get(i)));
+                letyShops.add(new LetyShops(names.get(i), Double.parseDouble(discounts.get(i).substring(matcher.start(), matcher.end())), labels.get(i), pagesOnTheSite.get(i), images.get(i)));
             }
         }
 
@@ -72,15 +70,15 @@ public class LetyShopsParser implements ParserInterface {
         }
     }
 
-    private void parsElementsForLetyShops(Pattern patternForLabel, List<String> discounts, List<String> names, List<String> labels, int i) throws IOException {
+    private void parsElementsForLetyShops(int i) throws IOException {
         Document document;
         Elements elements;
         document = Jsoup.connect("https://letyshops.com/shops?page=" + i).get();
 
-        elements = document.getElementsByClass("b-teaser__title");
+        elements = document.select("div.b-teaser");
 
         for (Element element : elements) {
-            names.add(element.text());
+            names.add(element.select("div.b-teaser__title").text());
         }
 
         elements = document.getElementsByClass("b-shop-teaser__cash-value-row");
@@ -98,6 +96,16 @@ public class LetyShopsParser implements ParserInterface {
             }
         }
 
-        //System.out.println(labels.size() + " : " + discounts.size() + " : " + names.size());
+        elements = document.select("div.b-teaser__cover");
+
+        for (Element element : elements) {
+            images.add(element.select("img[src]").attr("src"));
+        }
+
+        elements = document.select("a.b-teaser__inner");
+
+        for (Element element : elements) {
+            pagesOnTheSite.add(addressOfSite+element.attr("href"));
+        }
     }
 }

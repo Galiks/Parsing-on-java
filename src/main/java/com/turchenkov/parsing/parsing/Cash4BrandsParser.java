@@ -22,9 +22,9 @@ public class Cash4BrandsParser implements ParserInterface {
 
         Document document = Jsoup.connect("https://cash4brands.ru/cashback/")
                 .userAgent("Chrome/32.0.1667.0 Safari/537.36")
-                .referrer("https://cash4brands.ru/")
                 .data("data-page", "1")
                 .data("data-nextpage","2")
+                .referrer("https://cash4brands.ru/")
                 .post();
 
         Elements elements = document.select("section.shops").select("h3[itemprop]");
