@@ -6,10 +6,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MegaBonusParser implements ParserInterface {
     @Override
-    public void parsing() throws IOException, InterruptedException {
+    public ArrayList parsing() throws IOException, InterruptedException {
         Document document = Jsoup.connect("https://megabonus.com/")
                 .userAgent("Chrome/32.0.1667.0 Safari/537.36").get();
 
@@ -22,5 +23,6 @@ public class MegaBonusParser implements ParserInterface {
         }
 
         System.out.println("The End");
+        return null;
     }
 }

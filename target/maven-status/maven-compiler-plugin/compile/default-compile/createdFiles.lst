@@ -1,8 +1,11 @@
+com\turchenkov\parsing\domains\EPN.class
 com\turchenkov\parsing\parsing\ParserInterface.class
 com\turchenkov\parsing\domains\LetyShops.class
 com\turchenkov\parsing\domains\SiteForParsing.class
 com\turchenkov\parsing\repository\UserRepository.class
+com\turchenkov\parsing\parsing\EPN_Parser.class
 com\turchenkov\parsing\parsing\LetyShopsParser.class
 com\turchenkov\parsing\model\User.class
 com\turchenkov\parsing\ParsingApplication.class
 com\turchenkov\parsing\parsing\Cash4BrandsParser.class
+com\turchenkov\parsing\parsing\MegaBonusParser.class

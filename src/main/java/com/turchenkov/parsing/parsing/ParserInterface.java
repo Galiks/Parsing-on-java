@@ -1,7 +1,8 @@
 package com.turchenkov.parsing.parsing;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public interface ParserInterface {
-    void parsing() throws IOException, InterruptedException;
+    ArrayList parsing() throws IOException, InterruptedException;
 }

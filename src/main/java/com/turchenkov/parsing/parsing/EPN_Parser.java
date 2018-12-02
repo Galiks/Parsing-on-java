@@ -22,10 +22,10 @@ public class EPN_Parser implements ParserInterface {
     private String checkWord = "Новый";
     private Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
     private Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
-    private List<EPN> epns = new ArrayList<>();
+    private List<EPN> shop = new ArrayList<>();
 
     @Override
-    public void parsing() throws IOException, InterruptedException {
+    public ArrayList parsing() throws IOException, InterruptedException {
 
 
         int THREADS = 4; // кол-во потоков
@@ -58,9 +58,7 @@ public class EPN_Parser implements ParserInterface {
             pool.shutdown();
         }
 
-        for (EPN epn : epns) {
-            System.out.println(epn);
-        }
+        return (ArrayList) shop;
     }
 
     private void parsElementsForLetyShops(Pattern patternForLabel, List<String> discounts, List<String> names, List<String> labels, int i) throws IOException {
@@ -109,7 +107,7 @@ public class EPN_Parser implements ParserInterface {
 
                 if (labelMatcher.find()) {
 
-                    epns.add(new EPN(url.substring(33, url.length() - 1), Double.parseDouble(tempElement.substring(discountMatcher.start(), discountMatcher.end())), tempElement.substring(labelMatcher.start(), labelMatcher.end()), url, image));
+                    shop.add(new EPN(url.substring(33, url.length() - 1), Double.parseDouble(tempElement.substring(discountMatcher.start(), discountMatcher.end())), tempElement.substring(labelMatcher.start(), labelMatcher.end()), url, image));
                 }
             }
         }

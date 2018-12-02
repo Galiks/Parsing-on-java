@@ -1,8 +1,11 @@
 E:\parsing\src\main\java\com\turchenkov\parsing\parsing\LetyShopsParser.java
+E:\parsing\src\main\java\com\turchenkov\parsing\domains\EPN.java
 E:\parsing\src\main\java\com\turchenkov\parsing\parsing\ParserInterface.java
+E:\parsing\src\main\java\com\turchenkov\parsing\parsing\EPN_Parser.java
 E:\parsing\src\main\java\com\turchenkov\parsing\domains\LetyShops.java
 E:\parsing\src\main\java\com\turchenkov\parsing\domains\SiteForParsing.java
 E:\parsing\src\main\java\com\turchenkov\parsing\repository\UserRepository.java
 E:\parsing\src\main\java\com\turchenkov\parsing\ParsingApplication.java
 E:\parsing\src\main\java\com\turchenkov\parsing\parsing\Cash4BrandsParser.java
 E:\parsing\src\main\java\com\turchenkov\parsing\model\User.java
+E:\parsing\src\main\java\com\turchenkov\parsing\parsing\MegaBonusParser.java

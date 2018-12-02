@@ -27,18 +27,15 @@ public class LetyShopsParser implements ParserInterface {
     private List<String> labels = new ArrayList<>();
     private List<String> pagesOnTheSite = new ArrayList<>();
     private List<String> images = new ArrayList<>();
-    private List<LetyShops> letyShops = new ArrayList<>();
+    private List<LetyShops> shop = new ArrayList<>();
 
     @Override
-    public void parsing() throws IOException, InterruptedException {
+    public ArrayList parsing() throws IOException, InterruptedException {
 
 
         int THREADS = 4; // кол-во потоков
         ExecutorService pool = Executors.newFixedThreadPool(THREADS);
         List<Callable<Object>> tasks = new ArrayList<>();
-
-
-
         Document document = Jsoup.connect("https://letyshops.com/shops?page=1").get();
 
         Elements elements = document.getElementsByClass("b-pagination__item");
@@ -61,13 +58,11 @@ public class LetyShopsParser implements ParserInterface {
         for (int i = 0; i < discounts.size(); i++) {
             Matcher matcher = patternForDiscount.matcher(discounts.get(i));
             if (matcher.find()) {
-                letyShops.add(new LetyShops(names.get(i), Double.parseDouble(discounts.get(i).substring(matcher.start(), matcher.end())), labels.get(i), pagesOnTheSite.get(i), images.get(i)));
+                shop.add(new LetyShops(names.get(i), Double.parseDouble(discounts.get(i).substring(matcher.start(), matcher.end())), labels.get(i), pagesOnTheSite.get(i), images.get(i)));
             }
         }
 
-        for (SiteForParsing letyShop : letyShops) {
-            System.out.println(letyShop);
-        }
+        return (ArrayList)shop;
     }
 
     private void parsElementsForLetyShops(int i) throws IOException {
