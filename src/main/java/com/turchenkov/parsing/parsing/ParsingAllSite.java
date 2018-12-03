@@ -16,7 +16,7 @@ public class ParsingAllSite {
 
     public List<SiteForParsing> parseAllSites() throws IOException, InterruptedException {
         parsers.add(letyShopsParser);
-        //parsers.add(epn_parser);
+        parsers.add(epn_parser);
 
         ArrayList<SiteForParsing> shops = new ArrayList<>();
 

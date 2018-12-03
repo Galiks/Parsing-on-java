@@ -22,8 +22,12 @@
                     <td th:text="${shop.id}"></td>
                     <td th:text="${shop.name}"></td>
                     <td th:text="${shop.discount + ' ' + shop.label}"></td>
-                    <td th:text="${shop.image}"></td>
-                    <td th:text="${shop.pageOnTheSite}"></td>
+                    <td>
+                        <img th:src="${shop.image}">
+                    </td>
+                    <td>
+                        <a th:href="${shop.pageOnTheSite}">Страничка сайта</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

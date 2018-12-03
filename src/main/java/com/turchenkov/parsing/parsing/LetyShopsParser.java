@@ -10,97 +10,122 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LetyShopsParser implements ParserInterface {
 
-    private String addressOfSite = "https://letyshops.com";
-    private Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
-    private Pattern patternForLabel = Pattern.compile("[$%€]|руб|");
-    private List<String> discounts = new ArrayList<>();
-    private List<String> names = new ArrayList<>();
-    private List<String> labels = new ArrayList<>();
-    private List<String> pagesOnTheSite = new ArrayList<>();
-    private List<String> images = new ArrayList<>();
-    private List<LetyShops> shop = new ArrayList<>();
+
+    private final String addressOfSite;
+    private final Pattern patternForDiscount;
+    private final Pattern patternForLabel;
+    private final ExecutorService pool;
+
+    public LetyShopsParser() {
+//        вынести в константы. в файл пропертей. затягивать через @value
+        this.addressOfSite = "https://letyshops.com";
+        this.patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+        this.patternForLabel = Pattern.compile("[$%€]|руб|");
+        int THREADS = 4; // кол-во потоков
+//        _____________________________________
+
+        this.pool = Executors.newFixedThreadPool(THREADS);
+    }
 
     @Override
-    public ArrayList parsing() throws IOException, InterruptedException {
+    public List<SiteForParsing> parsing() {
+        int maxPage = getMaxPage();
 
-
-        int THREADS = 4; // кол-во потоков
-        ExecutorService pool = Executors.newFixedThreadPool(THREADS);
-        List<Callable<Object>> tasks = new ArrayList<>();
-        Document document = Jsoup.connect("https://letyshops.com/shops?page=1").get();
-
-        Elements elements = document.getElementsByClass("b-pagination__item");
-
-        int maxPage = Integer.parseInt(elements.get(elements.size() - 2).text());
-
+        List<Future<List<LetyShops>>> futures = new ArrayList<>();
+        List<SiteForParsing> result;
         try {
             for (int i = 1; i <= maxPage; i++) {
-                int finalI = i;
-                tasks.add(() -> {
-                    parsElementsForLetyShops(finalI);
-                    return null;
-                });
+                final int finalI = i;
+                futures.add(pool.submit(() -> parsElementsForLetyShops(finalI)));
             }
-            List<Future<Object>> invokeAll = pool.invokeAll(tasks);
+            result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
         } finally {
             pool.shutdown();
         }
 
-        for (int i = 0; i < discounts.size(); i++) {
-            Matcher matcher = patternForDiscount.matcher(discounts.get(i));
-            if (matcher.find()) {
-                shop.add(new LetyShops(names.get(i), Double.parseDouble(discounts.get(i).substring(matcher.start(), matcher.end())), labels.get(i), pagesOnTheSite.get(i), images.get(i)));
-            }
-        }
-
-        return (ArrayList)shop;
+        return result;
     }
 
-    private void parsElementsForLetyShops(int i) throws IOException {
-        Document document;
-        Elements elements;
-        document = Jsoup.connect("https://letyshops.com/shops?page=" + i).get();
-
-        elements = document.select("div.b-teaser");
-
-        for (Element element : elements) {
-            names.add(element.select("div.b-teaser__title").text());
-        }
-
-        elements = document.getElementsByClass("b-shop-teaser__cash-value-row");
-
-        for (Element element : elements) {
-            discounts.add(element.text());
-        }
-
-        elements = document.getElementsByClass("b-shop-teaser__label");
-
-        for (Element element : elements) {
-            Matcher matcher = patternForLabel.matcher(element.text());
-            if (matcher.find()) {
-                labels.add(element.text().substring(matcher.start(), matcher.end()));
+    private Function<Future<List<LetyShops>>, Stream<? extends LetyShops>> getFutureStream() {
+        return it -> {
+            try {
+                return it.get().stream();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                return Stream.empty();
             }
+        };
+    }
+
+    private List<LetyShops> parsElementsForLetyShops(int i) throws IOException {
+        Document document = Jsoup.connect("https://letyshops.com/shops?page=" + i).get();
+        Elements items = document.getElementsByClass("b-teaser__inner");
+
+        List<LetyShops> pageResult = new ArrayList<>();
+        for (Element item : items) {
+            String title = getTitle(item);
+            String pagesOnTheSite = getPagesOnTheSite(item);
+            Double discount = getDiscount(item);
+            String label = getLabel(item);
+            String img = getImage(item);
+            LetyShops letyShops = new LetyShops(title, discount, label, pagesOnTheSite, img);
+            pageResult.add(letyShops);
+        }
+        return pageResult;
+    }
+
+    private String getTitle(Element item) {
+        return item.getElementsByClass("b-teaser__title").text();
+    }
+
+    private String getImage(Element item) {
+        return item.getElementsByClass("b-teaser__cover").first().getElementsByTag("img").attr("src");
+    }
+
+    private String getLabel(Element item) {
+        String label = item.getElementsByClass("b-shop-teaser__label").first().text();
+        Matcher matcher = patternForLabel.matcher(label);
+        if (matcher.find()) {
+            return label.substring(matcher.start(), matcher.end());
+        }
+        return "";
+    }
+
+    private String getPagesOnTheSite(Element item) {
+        return addressOfSite + item.attr("href");
+    }
+
+    private Double getDiscount(Element item) {
+        String discount = item.getElementsByClass("b-shop-teaser__cash-value-row").first().text();
+        Matcher matcher = patternForDiscount.matcher(discount);
+        if (matcher.find()) {
+            return Double.parseDouble(discount.substring(matcher.start(), matcher.end()));
+        }
+        return Double.NaN;
+    }
+
+    private int getMaxPage() {
+        try {
+            Elements elements = Jsoup.connect("https://letyshops.com/shops?page=1")
+                    .get()
+                    .getElementsByClass("b-pagination__item");
+            return Integer.parseInt(elements.get(elements.size() - 2).text());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
         }
 
-        elements = document.select("div.b-teaser__cover");
-
-        for (Element element : elements) {
-            images.add(element.select("img[src]").attr("src"));
-        }
-
-        elements = document.select("a.b-teaser__inner");
-
-        for (Element element : elements) {
-            pagesOnTheSite.add(addressOfSite+element.attr("href"));
-        }
     }
 }
