@@ -12,11 +12,11 @@ public class EPN extends SiteForParsing {
     @Override
     public String toString() {
         return "EPN{" +
-                "name='" + name + '\'' +
-                ", discount=" + discount +
-                ", label='" + label + '\'' +
-                ", pageOnTheSite='" + pageOnTheSite + '\'' +
-                ", image='" + image + '\'' +
+                "name='" + getName() + '\'' +
+                ", discount=" + getDiscount() +
+                ", label='" + getLabel() + '\'' +
+                ", pageOnTheSite='" + getPageOnTheSite() + '\'' +
+                ", image='" + getImage() + '\'' +
                 '}';
     }
 }

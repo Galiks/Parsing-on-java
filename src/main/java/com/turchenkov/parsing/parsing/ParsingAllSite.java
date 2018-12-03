@@ -1,7 +1,6 @@
 package com.turchenkov.parsing.parsing;
 
 import com.turchenkov.parsing.domains.SiteForParsing;
-import com.turchenkov.parsing.model.Shop;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class ParsingAllSite {
 
 
 
-    public ArrayList parseAllSites() throws IOException, InterruptedException {
+    public List<SiteForParsing> parseAllSites() throws IOException, InterruptedException {
         parsers.add(letyShopsParser);
         //parsers.add(epn_parser);
 

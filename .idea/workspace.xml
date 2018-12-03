@@ -2,33 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="746946db-ad0f-4fc4-ae5d-9d1b1a32b0de" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_h2database_h2_1_4_197.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_devtools_2_1_0_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/controllers/ShopController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/model/Shop.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParsingAllSite.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/repository/ShopRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_microsoft_sqlserver_mssql_jdbc_6_4_0_jre8.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_security_2_1_0_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_config_5_1_1_RELEASE.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_attoparser_attoparser_2_0_5_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_thymeleaf_2_1_0_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_extras_thymeleaf_extras_java8time_3_0_1_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_3_0_11_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_spring5_3_0_11_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_unbescape_unbescape_1_1_6_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/shops.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/parsing.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/parsing.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/ParsingApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/ParsingApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/Cash4BrandsParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/Cash4BrandsParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/EPN_Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/EPN_Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/LetyShopsParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/LetyShopsParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/MegaBonusParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/MegaBonusParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParserInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.turchenkov.parsing.ParsingApplicationTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.turchenkov.parsing.ParsingApplicationTests.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.turchenkov.parsing.ParsingApplicationTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.turchenkov.parsing.ParsingApplicationTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/controllers/ShopController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/controllers/ShopController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/EPN.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/EPN.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/LetyShops.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/LetyShops.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/SiteForParsing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/SiteForParsing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParsingAllSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParsingAllSite.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -57,8 +46,8 @@
       <file leaf-file-name="ParsingApplication.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/ParsingApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
+            <state relative-caret-position="425">
+              <caret line="29" column="14" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -66,11 +55,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="shops.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/shops.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="75" selection-start-line="23" selection-start-column="75" selection-end-line="23" selection-end-column="75" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ParsingAllSite.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParsingAllSite.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="10" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
+            <state relative-caret-position="316">
+              <caret line="20" column="60" lean-forward="true" selection-start-line="20" selection-start-column="60" selection-end-line="20" selection-end-column="60" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -81,8 +79,8 @@
       <file leaf-file-name="ShopController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/controllers/ShopController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="32" selection-end-column="7" />
+            <state relative-caret-position="412">
+              <caret line="61" column="11" lean-forward="true" selection-start-line="55" selection-start-column="10" selection-end-line="61" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -93,11 +91,38 @@
       <file leaf-file-name="Shop.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/model/Shop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+            <state relative-caret-position="225">
+              <caret line="25" column="32" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SiteForParsing.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/SiteForParsing.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LetyShops.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/LetyShops.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EPN.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/EPN.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -109,6 +134,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -137,11 +163,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/Parser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/packageForAnotherWork/Another.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/PhantomJsUtils.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/SiteForParsing.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/EPN.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/LetyShops.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/3fc6acfc-351a-4a37-b46a-ecef5af40bf7/console.sql" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/repository/ShopRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/EPN_Parser.java" />
@@ -150,8 +172,13 @@
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/LetyShopsParser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParserInterface.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/model/Shop.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/controllers/ShopController.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/shops.html" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/LetyShops.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/SiteForParsing.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/EPN.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParsingAllSite.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/controllers/ShopController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/ParsingApplication.java" />
       </list>
     </option>
@@ -181,7 +208,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -191,6 +218,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -240,6 +268,15 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="parsing" type="462c0819:PsiDirectoryNode" />
+              <item name="domains" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="parsing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="parsing" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="parsing" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -258,16 +295,24 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="parsing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="parsing" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -436,6 +481,8 @@
       <workItem from="1543393281671" duration="3893000" />
       <workItem from="1543475024970" duration="6738000" />
       <workItem from="1543755200530" duration="9809000" />
+      <workItem from="1543784378635" duration="47000" />
+      <workItem from="1543824849673" duration="5298000" />
     </task>
     <servers />
   </component>
@@ -451,7 +498,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62000000" />
+    <option name="totallyTimeSpent" value="67345000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -475,13 +522,12 @@
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.32943678" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="bottom" id="Version Control" order="13" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.33049947" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33049947" />
       <window_info anchor="bottom" id="Spring" order="7" />
       <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1765625" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20208333" />
       <window_info anchor="right" id="Bean Validation" order="7" />
       <window_info id="Web" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -490,6 +536,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -504,44 +551,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/SiteForParsing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/model/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/ParsingApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="15" column="62" selection-start-line="15" selection-start-column="62" selection-end-line="15" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/LetyShopsParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="35" column="51" selection-start-line="35" selection-start-column="51" selection-end-line="35" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/Cash4BrandsParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/LetyShops.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -732,34 +741,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="33" column="60" selection-start-line="33" selection-start-column="60" selection-end-line="33" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/LetyShops.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/SiteForParsing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="17" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/EPN.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="30" lean-forward="true" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -808,16 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/LetyShopsParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="64" column="31" lean-forward="true" selection-start-line="64" selection-start-column="31" selection-end-line="64" selection-end-column="31" />
-          <folding>
-            <element signature="method#parsElementsForLetyShops#0;class#LetyShopsParser#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParserInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -838,30 +809,103 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/model/Shop.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+        <state relative-caret-position="423">
+          <caret line="38" column="21" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/LetyShopsParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="706">
+          <caret line="64" column="31" selection-start-line="64" selection-start-column="31" selection-end-line="64" selection-end-column="31" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="method#parsElementsForLetyShops#0;class#LetyShopsParser#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/controllers/ShopController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/shops.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="32" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="391">
+          <caret line="23" column="75" selection-start-line="23" selection-start-column="75" selection-end-line="23" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_171/src.zip!/java/util/function/Consumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="48" column="9" selection-start-line="48" selection-start-column="9" selection-end-line="48" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/thymeleaf/thymeleaf-spring5/3.0.11.RELEASE/thymeleaf-spring5-3.0.11.RELEASE.jar!/org/thymeleaf/spring5/expression/SPELVariableExpressionEvaluator.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="89" selection-start-line="89" selection-end-line="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/5.1.2.RELEASE/spring-expression-5.1.2.RELEASE.jar!/org/springframework/expression/spel/ast/PropertyOrFieldReference.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="159" selection-start-line="159" selection-end-line="159" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/2.1.0.RELEASE/spring-boot-autoconfigure-2.1.0.RELEASE.jar!/org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="100" column="50" selection-start-line="100" selection-start-column="50" selection-end-line="100" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/parsing/ParsingAllSite.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="10" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
+        <state relative-caret-position="316">
+          <caret line="20" column="60" lean-forward="true" selection-start-line="20" selection-start-column="60" selection-end-line="20" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/model/Shop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="25" column="32" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/SiteForParsing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/LetyShops.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/domains/EPN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/controllers/ShopController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="412">
+          <caret line="61" column="11" lean-forward="true" selection-start-line="55" selection-start-column="10" selection-end-line="61" selection-end-column="11" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -870,8 +914,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turchenkov/parsing/ParsingApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        <state relative-caret-position="425">
+          <caret line="29" column="14" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
