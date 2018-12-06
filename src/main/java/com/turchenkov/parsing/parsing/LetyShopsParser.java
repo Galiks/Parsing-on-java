@@ -32,8 +32,8 @@ public class LetyShopsParser implements ParserInterface {
 //        вынести в константы. в файл пропертей. затягивать через @value
         this.addressOfSite = "https://letyshops.com";
         this.patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
-        this.patternForLabel = Pattern.compile("[$%€]|руб|");
-        int THREADS = 4; // кол-во потоков
+        this.patternForLabel = Pattern.compile("\\$|%|€|руб|^\\s");
+        int THREADS = 2; // кол-во потоков
 //        _____________________________________
 
         this.pool = Executors.newFixedThreadPool(THREADS);
@@ -95,7 +95,7 @@ public class LetyShopsParser implements ParserInterface {
     }
 
     private String getLabel(Element item) {
-        String label = item.getElementsByClass("b-shop-teaser__label").first().text();
+        String label = item.getElementsByClass("b-shop-teaser__label").text();
         Matcher matcher = patternForLabel.matcher(label);
         if (matcher.find()) {
             return label.substring(matcher.start(), matcher.end());

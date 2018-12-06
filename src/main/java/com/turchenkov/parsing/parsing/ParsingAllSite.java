@@ -7,16 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParsingAllSite {
-    private LetyShopsParser letyShopsParser = new LetyShopsParser();
-    private EPN_Parser epn_parser = new EPN_Parser();
-
-    private List<ParserInterface> parsers = new ArrayList<ParserInterface>();
-
-
 
     public List<SiteForParsing> parseAllSites() throws IOException, InterruptedException {
+        LetyShopsParser letyShopsParser = new LetyShopsParser();
+        EPN_Parser epn_parser = new EPN_Parser();
+
+        List<ParserInterface> parsers = new ArrayList<ParserInterface>();
         parsers.add(letyShopsParser);
-        parsers.add(epn_parser);
+        //parsers.add(epn_parser);
 
         ArrayList<SiteForParsing> shops = new ArrayList<>();
 

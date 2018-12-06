@@ -3,6 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Shops</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -11,18 +14,18 @@
             <table class="table table-striped table-condensed table-bordered">
                 <tbody>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Discount</th>
-                    <th>Image</th>
-                    <th>URL</th>
+                    <th align="center">ID</th>
+                    <th align="center">Name</th>
+                    <th align="center">Discount</th>
+                    <th align="center">Image</th>
+                    <th align="center">URL</th>
                     <th></th>
                 </tr>
                 <tr th:each="shop : ${shops}" th:action="@{/shops}">
                     <td th:text="${shop.id}"></td>
                     <td th:text="${shop.name}"></td>
                     <td th:text="${shop.discount + ' ' + shop.label}"></td>
-                    <td>
+                    <td align="center">
                         <img th:src="${shop.image}">
                     </td>
                     <td>
