@@ -3,7 +3,7 @@ package com.turchenkov.parsing.controllers;
 import com.turchenkov.parsing.domains.SiteForParsing;
 import com.turchenkov.parsing.dto.ShopDTO;
 import com.turchenkov.parsing.model.Shop;
-import com.turchenkov.parsing.parsing.ParsingAllSite;
+import com.turchenkov.parsing.parsingmethods.ParsingAllSite;
 import com.turchenkov.parsing.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

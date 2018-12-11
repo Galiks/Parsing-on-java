@@ -1,7 +1,6 @@
-package com.turchenkov.parsing.parsing;
+package com.turchenkov.parsing.parsingmethods;
 
 import com.turchenkov.parsing.domains.EPN;
-import com.turchenkov.parsing.domains.LetyShops;
 import com.turchenkov.parsing.domains.SiteForParsing;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

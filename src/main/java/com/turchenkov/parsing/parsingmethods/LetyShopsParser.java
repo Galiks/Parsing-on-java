@@ -1,4 +1,4 @@
-package com.turchenkov.parsing.parsing;
+package com.turchenkov.parsing.parsingmethods;
 
 import com.turchenkov.parsing.domains.LetyShops;
 import com.turchenkov.parsing.domains.SiteForParsing;
@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@MeasuringTime
 public class LetyShopsParser implements ParserInterface {
 
 

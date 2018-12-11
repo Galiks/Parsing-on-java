@@ -1,4 +1,4 @@
-package com.turchenkov.parsing.parsing;
+package com.turchenkov.parsing.parsingmethods;
 
 import com.turchenkov.parsing.domains.SiteForParsing;
 
@@ -14,7 +14,7 @@ public class ParsingAllSite {
 
         List<ParserInterface> parsers = new ArrayList<>();
         parsers.add(letyShopsParser);
-        parsers.add(epn_parser);
+        //parsers.add(epn_parser);
 
         ArrayList<SiteForParsing> shops = new ArrayList<>();
 

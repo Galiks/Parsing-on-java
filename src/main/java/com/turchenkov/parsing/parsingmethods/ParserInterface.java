@@ -1,9 +1,8 @@
-package com.turchenkov.parsing.parsing;
+package com.turchenkov.parsing.parsingmethods;
 
 import com.turchenkov.parsing.domains.SiteForParsing;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ParserInterface {

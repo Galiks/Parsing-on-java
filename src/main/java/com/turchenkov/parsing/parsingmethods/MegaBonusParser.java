@@ -1,4 +1,4 @@
-package com.turchenkov.parsing.parsing;
+package com.turchenkov.parsing.parsingmethods;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

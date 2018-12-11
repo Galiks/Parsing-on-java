@@ -28,3 +28,6 @@ src/main/java/com/turchenkov/testing/Main.java
 .idea/workspace.xml
 .idea/workspace.xml
 target/classes/application.properties
+.idea/parsing.iml
+.idea/parsing.iml
+.idea/workspace.xml
