@@ -23,18 +23,13 @@ import java.util.stream.Stream;
 public class LetyShopsParser implements ParserInterface {
 
 
-    private final String addressOfSite;
-    private final Pattern patternForDiscount;
-    private final Pattern patternForLabel;
+    private final String addressOfSite = "https://letyshops.com";
+    private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    private final Pattern patternForLabel  = Pattern.compile("\\$|%|€|руб|^\\s");
+    private final int THREADS = 4;
     private final ExecutorService pool;
 
     public LetyShopsParser() {
-//        вынести в константы. в файл пропертей. затягивать через @value
-        this.addressOfSite = "https://letyshops.com";
-        this.patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
-        this.patternForLabel = Pattern.compile("\\$|%|€|руб|^\\s");
-        int THREADS = 2; // кол-во потоков
-//        _____________________________________
 
         this.pool = Executors.newFixedThreadPool(THREADS);
     }
@@ -43,12 +38,12 @@ public class LetyShopsParser implements ParserInterface {
     public List<SiteForParsing> parsing() {
         int maxPage = getMaxPage();
 
-        List<Future<List<LetyShops>>> futures = new ArrayList<>();
+        List<Future<List<SiteForParsing>>> futures = new ArrayList<>();
         List<SiteForParsing> result;
         try {
             for (int i = 1; i <= maxPage; i++) {
                 final int finalI = i;
-                futures.add(pool.submit(() -> parsElementsForLetyShops(finalI)));
+                futures.add(pool.submit(() -> parsElements(finalI)));
             }
             result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
         } finally {
@@ -58,7 +53,7 @@ public class LetyShopsParser implements ParserInterface {
         return result;
     }
 
-    private Function<Future<List<LetyShops>>, Stream<? extends LetyShops>> getFutureStream() {
+    private Function<Future<List<SiteForParsing>>, Stream<? extends SiteForParsing>> getFutureStream() {
         return it -> {
             try {
                 return it.get().stream();
@@ -69,13 +64,13 @@ public class LetyShopsParser implements ParserInterface {
         };
     }
 
-    private List<LetyShops> parsElementsForLetyShops(int i) throws IOException {
+    private List<SiteForParsing> parsElements(int i) throws IOException {
         Document document = Jsoup.connect("https://letyshops.com/shops?page=" + i).get();
         Elements items = document.getElementsByClass("b-teaser__inner");
 
-        List<LetyShops> pageResult = new ArrayList<>();
+        List<SiteForParsing> pageResult = new ArrayList<>();
         for (Element item : items) {
-            String title = getTitle(item);
+            String title = getName(item);
             String pagesOnTheSite = getPagesOnTheSite(item);
             Double discount = getDiscount(item);
             String label = getLabel(item);
@@ -86,7 +81,7 @@ public class LetyShopsParser implements ParserInterface {
         return pageResult;
     }
 
-    private String getTitle(Element item) {
+    private String getName(Element item) {
         return item.getElementsByClass("b-teaser__title").text();
     }
 

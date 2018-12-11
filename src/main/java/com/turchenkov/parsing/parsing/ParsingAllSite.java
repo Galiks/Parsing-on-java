@@ -12,9 +12,9 @@ public class ParsingAllSite {
         LetyShopsParser letyShopsParser = new LetyShopsParser();
         EPN_Parser epn_parser = new EPN_Parser();
 
-        List<ParserInterface> parsers = new ArrayList<ParserInterface>();
+        List<ParserInterface> parsers = new ArrayList<>();
         parsers.add(letyShopsParser);
-        //parsers.add(epn_parser);
+        parsers.add(epn_parser);
 
         ArrayList<SiteForParsing> shops = new ArrayList<>();
 
