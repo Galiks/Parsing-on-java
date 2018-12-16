@@ -26,15 +26,15 @@ public class ShopController {
 
     @GetMapping("/shops")
     public String allReportsGet(Model model) throws IOException, InterruptedException {
-        getParsing();
         List<Shop> shops = new ArrayList<>();
-        shopRepository.findAll().forEach(shops::add);
+        shopRepository.findAllByOrderByName().forEach(shops::add);
         model.addAttribute("shops", shops);
-        model.addAttribute("shopDto", new ShopDTO());
+        //model.addAttribute("shopDto", new ShopDTO());
         return "shops";
     }
 
     private void getParsing() throws IOException, InterruptedException {
+        shopRepository.deleteAll();
         for (SiteForParsing site : parsingAllSite.parseAllSites()) {
             shopRepository.save(new Shop(site.getName(), site.getDiscount(), site.getLabel(), site.getPageOnTheSite(), site.getImage()));
         }
@@ -45,5 +45,16 @@ public class ShopController {
         return "redirect:/shops";
     }
 
+    @PostMapping("/shops/update")
+    public String updateShops() throws IOException, InterruptedException {
+        getParsing();
+        return "redirect:/shops";
+    }
+
+    @PostMapping("/shops/orderByDiscount")
+    public String orderByDiscount() throws IOException, InterruptedException {
+        getParsing();
+        return "redirect:/shops";
+    }
 
 }
