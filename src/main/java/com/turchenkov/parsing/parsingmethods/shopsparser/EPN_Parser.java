@@ -1,11 +1,12 @@
-package com.turchenkov.parsing.parsingmethods;
+package com.turchenkov.parsing.parsingmethods.shopsparser;
 
-import com.turchenkov.parsing.domains.EPN;
-import com.turchenkov.parsing.domains.SiteForParsing;
+import com.turchenkov.parsing.domains.shop.EPN;
+import com.turchenkov.parsing.domains.shop.Shop;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Component
 public class EPN_Parser implements ParserInterface {
 
     //избавить от констант, перенеся их в application.properties
@@ -38,11 +40,11 @@ public class EPN_Parser implements ParserInterface {
     }
 
     @Override
-    public List<SiteForParsing> parsing() {
+    public List<Shop> parsing() {
         int maxPage = getMaxPage();
 
-        List<Future<List<SiteForParsing>>> futures = new ArrayList<>();
-        List<SiteForParsing> result;
+        List<Future<List<Shop>>> futures = new ArrayList<>();
+        List<Shop> result;
         try {
             for (int i = 1; i <= maxPage; i++) {
                 final int finalI = i;
@@ -56,7 +58,7 @@ public class EPN_Parser implements ParserInterface {
         return result;
     }
 
-    private Function<Future<List<SiteForParsing>>, Stream<? extends SiteForParsing>> getFutureStream() {
+    private Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
         return it -> {
             try {
                 return it.get().stream();
@@ -79,7 +81,7 @@ public class EPN_Parser implements ParserInterface {
         return 1;
     }
 
-    private List<SiteForParsing> parsElements(int i) throws IOException {
+    private List<Shop> parsElements(int i) throws IOException {
 
         Document document = Jsoup.connect(parsingURL + i)
                 .userAgent(userAgent)
@@ -87,7 +89,7 @@ public class EPN_Parser implements ParserInterface {
 
         Elements elements = document.select("div.shop-list__item");
 
-        List<SiteForParsing> epnList = new ArrayList<>();
+        List<Shop> epnList = new ArrayList<>();
 
         for (Element element : elements) {
             if (element.text().contains(checkWord)) {
@@ -162,7 +164,7 @@ public class EPN_Parser implements ParserInterface {
 
     //избавиться от магического числа 33 - количество символов, после которых начинается имя сайта, так как на сайте нет имени, а только картинка
     private String getName(String url) {
-        return url.substring(33, url.length() - 1);
+        return url.toUpperCase().charAt(33) + url.substring(34, url.length() - 1);
     }
 
 }

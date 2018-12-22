@@ -1,11 +1,13 @@
-package com.turchenkov.parsing.parsingmethods;
+package com.turchenkov.parsing.parsingmethods.shopsparser;
 
-import com.turchenkov.parsing.domains.LetyShops;
-import com.turchenkov.parsing.domains.SiteForParsing;
+import com.turchenkov.parsing.domains.shop.LetyShops;
+import com.turchenkov.parsing.domains.shop.Shop;
+import com.turchenkov.parsing.parsingmethods.timer.MeasuringTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @MeasuringTime
+@Component
 public class LetyShopsParser implements ParserInterface {
 
 
@@ -36,11 +39,11 @@ public class LetyShopsParser implements ParserInterface {
     }
 
     @Override
-    public List<SiteForParsing> parsing() {
+    public List<Shop> parsing() {
         int maxPage = getMaxPage();
 
-        List<Future<List<SiteForParsing>>> futures = new ArrayList<>();
-        List<SiteForParsing> result;
+        List<Future<List<Shop>>> futures = new ArrayList<>();
+        List<Shop> result;
         try {
             for (int i = 1; i <= maxPage; i++) {
                 final int finalI = i;
@@ -54,7 +57,7 @@ public class LetyShopsParser implements ParserInterface {
         return result;
     }
 
-    private Function<Future<List<SiteForParsing>>, Stream<? extends SiteForParsing>> getFutureStream() {
+    private Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
         return it -> {
             try {
                 return it.get().stream();
@@ -65,11 +68,11 @@ public class LetyShopsParser implements ParserInterface {
         };
     }
 
-    private List<SiteForParsing> parsElements(int i) throws IOException {
+    private List<Shop> parsElements(int i) throws IOException {
         Document document = Jsoup.connect("https://letyshops.com/shops?page=" + i).get();
         Elements items = document.getElementsByClass("b-teaser__inner");
 
-        List<SiteForParsing> pageResult = new ArrayList<>();
+        List<Shop> pageResult = new ArrayList<>();
         for (Element item : items) {
             String title = getName(item);
             String pagesOnTheSite = getPagesOnTheSite(item);

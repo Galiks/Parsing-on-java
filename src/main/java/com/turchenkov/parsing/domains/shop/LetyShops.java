@@ -1,6 +1,14 @@
-package com.turchenkov.parsing.domains;
+package com.turchenkov.parsing.domains.shop;
 
-public class LetyShops extends SiteForParsing {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.Entity;
+
+@Entity
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class LetyShops extends Shop {
 
     public LetyShops() {
     }

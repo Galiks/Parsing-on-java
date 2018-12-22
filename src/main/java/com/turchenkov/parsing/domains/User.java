@@ -1,4 +1,4 @@
-package com.turchenkov.parsing.model;
+package com.turchenkov.parsing.domains;
 
 import lombok.Data;
 
@@ -13,24 +13,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String login;
 
-    private int age;
+    private int password;
 
     public User() {
     }
 
-    public User(String name, int age) {
-        this.name = name;
-        this.age = age;
+    public User(String login, int password) {
+        this.login = login;
+        this.password = password;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
+                ", login='" + login + '\'' +
+                ", password=" + password +
                 '}';
     }
 }

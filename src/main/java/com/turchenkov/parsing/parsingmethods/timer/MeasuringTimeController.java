@@ -1,4 +1,4 @@
-package com.turchenkov.parsing.parsingmethods;
+package com.turchenkov.parsing.parsingmethods.timer;
 
 public class MeasuringTimeController implements MeasuringTimeControllerMBean {
     private boolean flag;
