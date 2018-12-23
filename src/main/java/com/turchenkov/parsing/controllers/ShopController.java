@@ -13,7 +13,7 @@ public class ShopController {
     @Autowired
     private ParsingServiceImpl service;
 
-    @GetMapping("/shops")
+    @GetMapping({"/shops", "/"})
     public String allReportsGet(Model model) {
         model.addAttribute("shops", service.getListOfShop());
         return "shops";
