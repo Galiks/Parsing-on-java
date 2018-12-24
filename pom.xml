@@ -57,33 +57,11 @@
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
         </dependency>
 
-        <!-- H2 Database -->
-        <!--<dependency>-->
-        <!--<groupId>com.h2database</groupId>-->
-        <!--<artifactId>h2</artifactId>-->
-        <!--</dependency>-->
-
-        <!--MSSQL-->
-        <!--<dependency>-->
-        <!--<groupId>com.microsoft.sqlserver</groupId>-->
-        <!--<artifactId>mssql-jdbc</artifactId>-->
-        <!--<scope>runtime</scope>-->
-        <!--</dependency>-->
-
         <!--MySQL-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity4 -->
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
-            <version>2.1.2.RELEASE</version>
-        </dependency>
-
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>

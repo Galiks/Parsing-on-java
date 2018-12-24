@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = "roles")
+//@EqualsAndHashCode(exclude = "roles")
 public class User {
 
     @Id
@@ -19,23 +19,22 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    @Size(min = 5, max = 50, message = "Incorrect Login")
-    private String login;
+//    @Size(min = 5, max = 50, message = "Incorrect Login")
+    private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "User_Role",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String login, String password) {
-        this.login = login;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
@@ -43,8 +42,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
-                ", password=" + password +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

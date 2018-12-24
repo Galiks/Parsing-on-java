@@ -2,7 +2,6 @@ package com.turchenkov.parsing.parsingmethods.shopsparser;
 
 import com.turchenkov.parsing.domains.shop.LetyShops;
 import com.turchenkov.parsing.domains.shop.Shop;
-import com.turchenkov.parsing.parsingmethods.timer.MeasuringTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,7 +21,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@MeasuringTime
 @Component
 public class LetyShopsParser implements ParserInterface {
 
