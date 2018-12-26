@@ -11,7 +11,8 @@ import java.util.Set;
 
 @Entity
 @Data
-//@EqualsAndHashCode(exclude = "roles")
+@EqualsAndHashCode
+@Table(name = "users")
 public class User {
 
     @Id
@@ -25,7 +26,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
+    private boolean enabled = true;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
