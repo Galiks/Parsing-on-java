@@ -18,7 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+//    @Column(unique = true, nullable = false)
 //    @Size(min = 5, max = 50, message = "Incorrect Login")
     private String username;
 
