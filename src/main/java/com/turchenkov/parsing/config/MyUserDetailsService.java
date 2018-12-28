@@ -25,6 +25,16 @@ public class MyUserDetailsService implements UserDetailsService {
                     .credentialsExpired(false)
                     .disabled(false)
                     .build();
+        }
+        if (s.equals("user")){
+            return org.springframework.security.core.userdetails.User.withUsername("user")
+                    .roles("USER")
+                    .password("user")
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .disabled(false)
+                    .build();
         } else {
             User user = userRepository.findUserByUsername(s);
             if (user == null) {

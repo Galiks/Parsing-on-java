@@ -55,3 +55,4 @@ target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/create
 target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
 target/surefire-reports/com.turchenkov.parsing.ParsingApplicationTests.txt
 target/surefire-reports/TEST-com.turchenkov.parsing.ParsingApplicationTests.xml
+.idea/workspace.xml

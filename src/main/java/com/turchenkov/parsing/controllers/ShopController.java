@@ -24,11 +24,6 @@ public class ShopController {
         return "redirect:/shops";
     }
 
-    @GetMapping("/shops/update")
-    public String updateShopsGet(){
-        return "redirect:/shops";
-    }
-
     @PostMapping("/shops/update")
     public String updateShopsPost() {
         service.update();

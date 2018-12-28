@@ -10,15 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -33,19 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-//    @Override
-//    protected UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.withUsername("admin")
-//                .roles("ADMIN")
-//                .password("admin")
-//                .accountExpired(false)
-//                .accountLocked(false)
-//                .credentialsExpired(false)
-//                .disabled(false)
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
 
     @Autowired
     public WebSecurityConfig(DataSource dataSource, MyUserDetailsService userDetailsService) {
@@ -54,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers("/resources/**");
     }
@@ -63,12 +44,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registration").permitAll()
+                .antMatchers("/", "/registration", "/shops").permitAll()
+                .antMatchers("/shops/update").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .successForwardUrl("/shops")
+                .failureForwardUrl("/registration")
                 .permitAll()
                 .and()
                 .logout()
