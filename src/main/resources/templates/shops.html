@@ -9,8 +9,7 @@
 </head>
 <body>
 
-<p><div sec:authorize="hasRole('USER')">Text visible to user.</div>
-<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+
 <div sec:authorize="isAuthenticated()">
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
@@ -19,7 +18,7 @@
 Authenticated username:
 <div sec:authentication="name"></div>
 Authenticated user roles:
-<div sec:authentication="principal.authorities"></div></p>
+<div sec:authentication="principal.authorities"></div>
 
 <div class="container">
     <div class="row">

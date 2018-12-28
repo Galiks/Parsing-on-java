@@ -26,7 +26,7 @@ public class MyUserDetailsService implements UserDetailsService {
                     .disabled(false)
                     .build();
         }
-        if (s.equals("user")){
+        if (s.equals("user")) {
             return org.springframework.security.core.userdetails.User.withUsername("user")
                     .roles("USER")
                     .password("user")
