@@ -1,5 +1,6 @@
 package com.turchenkov.parsing.config;
 
+import com.turchenkov.parsing.domains.user.Role;
 import com.turchenkov.parsing.domains.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +20,11 @@ public class MyUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.<GrantedAuthority>singletonList(new SimpleGrantedAuthority("USER"));
+        if (user.getRoles().contains(Role.ADMIN)) {
+            return Collections.<GrantedAuthority>singletonList(new SimpleGrantedAuthority("ADMIN"));
+        }else {
+            return Collections.<GrantedAuthority>singletonList(new SimpleGrantedAuthority("USER"));
+        }
     }
 
     @Override

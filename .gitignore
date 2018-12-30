@@ -56,3 +56,5 @@ target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputF
 target/surefire-reports/com.turchenkov.parsing.ParsingApplicationTests.txt
 target/surefire-reports/TEST-com.turchenkov.parsing.ParsingApplicationTests.xml
 .idea/workspace.xml
+target/classes/application.properties
+target/classes/templates/shops.html

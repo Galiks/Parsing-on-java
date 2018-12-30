@@ -6,41 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        if (s.equals("admin")) {
-            return org.springframework.security.core.userdetails.User.withUsername("admin")
-                    .roles("ADMIN")
-                    .password("admin")
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .disabled(false)
-                    .build();
-        }
-        if (s.equals("user")) {
-            return org.springframework.security.core.userdetails.User.withUsername("user")
-                    .roles("USER")
-                    .password("user")
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .disabled(false)
-                    .build();
-        } else {
             User user = userRepository.findUserByUsername(s);
             if (user == null) {
                 throw new UsernameNotFoundException(s);
             }
             return new MyUserPrincipal(user);
-        }
     }
 }
