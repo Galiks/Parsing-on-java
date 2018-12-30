@@ -1,5 +1,6 @@
 package com.turchenkov.parsing.parsingmethods.shopsparser;
 
+import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.LetyShops;
 import com.turchenkov.parsing.domains.shop.Shop;
 import org.jsoup.Jsoup;
@@ -36,6 +37,7 @@ public class LetyShopsParser implements ParserInterface {
         this.pool = Executors.newFixedThreadPool(THREADS);
     }
 
+    @Timer
     @Override
     public List<Shop> parsing() {
         int maxPage = getMaxPage();

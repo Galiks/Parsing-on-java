@@ -11,27 +11,28 @@
 
 
 <div sec:authorize="isAuthenticated()">
+    <p sec:authorize="hasAuthority('ADMIN')">Hello ADMIN!</p>
+    <p sec:authorize="hasAuthority('USER')">Hello USER!</p>
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
     </form>
+    Authenticated username:
+    <p sec:authentication="name"></p>
+    Authenticated user roles:
+    <p sec:authentication="principal.authorities"></p>
 </div>
-Authenticated username:
-<div sec:authentication="name"></div>
-Authenticated user roles:
-<div sec:authentication="principal.authorities"></div>
-
 <div class="container">
     <div class="row">
         <div class="span5">
             <table class="table table-striped table-condensed table-bordered">
                 <tbody>
                 <tr>
-                    <th sec:authorize="hasRole('ADMIN')">Обновить таблицу</th>
+                    <th sec:authorize="hasAuthority('ADMIN')">Обновить таблицу</th>
                     <th>Упорядочить по возрастанию скидки</th>
                     <th>Упорядочить по убыванию скидки</th>
                 </tr>
                 <tr>
-                    <td sec:authorize="hasRole('ADMIN')">
+                    <td sec:authorize="hasAuthority('ADMIN')">
                         <form method="post" th:action="@{shops/update}">
                             <input type="submit" value="Update">
                         </form>

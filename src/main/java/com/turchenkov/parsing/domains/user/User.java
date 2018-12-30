@@ -1,7 +1,6 @@
 package com.turchenkov.parsing.domains.user;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
@@ -12,6 +11,8 @@ import java.util.Set;
 @Entity
 @Data
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -19,10 +20,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(unique = true, nullable = false)
-//    @Size(min = 5, max = 50, message = "Incorrect Login")
+    @Column(unique = true, nullable = false)
+    @Size(min = 5, max = 50, message = "Incorrect Login")
+    @NonNull
     private String username;
 
+    @NonNull
     @Column(nullable = false)
     private String password;
 
@@ -32,9 +35,6 @@ public class User {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
-
-    public User() {
-    }
 
     public User(String username, String password) {
         this.username = username;

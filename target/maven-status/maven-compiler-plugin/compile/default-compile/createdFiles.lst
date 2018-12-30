@@ -3,9 +3,13 @@ com\turchenkov\parsing\domains\user\User.class
 com\turchenkov\parsing\repository\ShopRepository.class
 com\turchenkov\parsing\ParsingApplication.class
 com\turchenkov\parsing\repository\UserRepository.class
+com\turchenkov\parsing\customannotation\Timer.class
+com\turchenkov\parsing\repository\TimerRepository.class
 com\turchenkov\parsing\service\ParsingServiceImpl.class
+com\turchenkov\parsing\service\UserService.class
 com\turchenkov\parsing\config\MyUserDetailsService.class
 com\turchenkov\parsing\domains\user\Role.class
+com\turchenkov\parsing\domains\Timer.class
 com\turchenkov\parsing\parsingmethods\shopsparser\Cash4BrandsParser.class
 com\turchenkov\parsing\parsingmethods\shopsparser\MegaBonusParser.class
 com\turchenkov\parsing\domains\shop\Shop.class
@@ -13,6 +17,8 @@ com\turchenkov\parsing\parsingmethods\shopsparser\LetyShopsParser.class
 com\turchenkov\parsing\domains\shop\LetyShops.class
 com\turchenkov\parsing\parsingmethods\shopsparser\ParserInterface.class
 com\turchenkov\parsing\service\ParsingService.class
+com\turchenkov\parsing\service\UserServiceImpl.class
+com\turchenkov\parsing\customannotation\TimerAspect.class
 com\turchenkov\parsing\config\MvcConfig.class
 com\turchenkov\parsing\domains\shop\EPN.class
 com\turchenkov\parsing\controllers\ShopController.class
