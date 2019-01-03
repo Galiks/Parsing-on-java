@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -25,12 +26,43 @@ import java.util.stream.Stream;
 @Component
 public class LetyShopsParser implements ParserInterface {
 
+    @Value("${parsing.site.letyshops}")
+    private String addressOfSite;
 
-    private final String addressOfSite = "https://letyshops.com";
-    private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
-    private final Pattern patternForLabel  = Pattern.compile("\\$|%|€|руб|^\\s");
+    @Value("${parsing.pattern.discount}")
+    private String patternDiscount;
+
+    @Value("${parsing.pattern.label}")
+    private String patternLabel;
+
+    private Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    private Pattern patternForLabel  = Pattern.compile("[$%€]|руб|(р.)|cent");
     private final int THREADS = 4;
     private final ExecutorService pool;
+
+    public String getAddressOfSite() {
+        return addressOfSite;
+    }
+
+    public void setAddressOfSite(String addressOfSite) {
+        this.addressOfSite = addressOfSite;
+    }
+
+    public String getPatternDiscount() {
+        return patternDiscount;
+    }
+
+    public void setPatternDiscount(String patternDiscount) {
+        this.patternDiscount = patternDiscount;
+    }
+
+    public String getPatternLabel() {
+        return patternLabel;
+    }
+
+    public void setPatternLabel(String patternLabel) {
+        this.patternLabel = patternLabel;
+    }
 
     public LetyShopsParser() {
 

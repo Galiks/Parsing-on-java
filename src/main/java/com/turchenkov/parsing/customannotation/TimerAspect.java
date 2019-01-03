@@ -26,7 +26,7 @@ public class TimerAspect {
 
         Long endTime = System.currentTimeMillis();
 
-        timerRepository.save(new Timer(endTime-startTime, new Date().toString()));
+        timerRepository.save(new Timer((endTime-startTime)/1000, new Date().toString()));
 
         return proceed;
 

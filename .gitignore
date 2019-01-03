@@ -66,3 +66,5 @@ target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/create
 target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 target/classes/templates/shops.html
+target/classes/application.properties
+.idea/dataSources/f588b4bc-244f-4099-8689-1d9844d81f8e.xml

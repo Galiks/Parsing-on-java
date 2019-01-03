@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -26,7 +27,10 @@ import java.util.stream.Stream;
 public class EPNParser implements ParserInterface {
 
     //избавить от констант, перенеся их в application.properties
-    private final String addressOfSite = "https://epn.bz";
+
+    @Value("${parsing.site.epn}")
+    private String addressOfSite;
+
     private final String startURL = "https://epn.bz/ru/cashback/shops/page/1";
     private final String checkWord = "Новый";
     private final String userAgent = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";

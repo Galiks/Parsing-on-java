@@ -2,6 +2,7 @@ package com.turchenkov.parsing.service;
 
 import com.turchenkov.parsing.domains.user.Role;
 import com.turchenkov.parsing.domains.user.User;
+import com.turchenkov.parsing.exception.ThereIsNoSuchUserException;
 import com.turchenkov.parsing.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             return user;
         } else {
-            return null;
+            throw new ThereIsNoSuchUserException();
         }
     }
 }

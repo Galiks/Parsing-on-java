@@ -1,6 +1,8 @@
 package com.turchenkov.parsing.controllers;
 
 import com.turchenkov.parsing.domains.user.User;
+import com.turchenkov.parsing.exception.ThereIsNoSuchUserException;
+import com.turchenkov.parsing.exception.ThereIsSuchUserException;
 import com.turchenkov.parsing.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,19 +17,18 @@ public class RegistrationController {
     private UserServiceImpl userService;
 
     @GetMapping("/registration")
-    public String registrationGet(){
+    public String registrationGet() {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registrationPost(User newUser, Model model){
-        User user = userService.findUserByName(newUser.getUsername());
-        if (user != null){
+    public String registrationPost(User newUser, Model model) {
+        if ( userService.findUserByName(newUser.getUsername()) != null) {
             model.addAttribute("message", "User exists");
-            return "registration";
+            throw new ThereIsSuchUserException();
+        } else {
+            userService.saveUser(newUser);
+            return "redirect:/login";
         }
-
-        userService.saveUser(newUser);
-        return "redirect:/login";
     }
 }
