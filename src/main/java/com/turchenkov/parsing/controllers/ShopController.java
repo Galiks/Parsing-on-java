@@ -1,6 +1,6 @@
 package com.turchenkov.parsing.controllers;
 
-import com.turchenkov.parsing.service.ParsingServiceImpl;
+import com.turchenkov.parsing.service.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ShopController {
 
     @Autowired
-    private ParsingServiceImpl service;
+    private ShopServiceImpl service;
 
     @GetMapping("/shops")
     public String allReportsGet(Model model) {
@@ -30,8 +30,25 @@ public class ShopController {
         return "redirect:/shops";
     }
 
+    @GetMapping("/shops/orderByDiscount")
+    public String orderByDiscountGet(Model model) {
+        model.addAttribute("shops", service.orderByDiscount());
+        return "shops";
+    }
+
     @PostMapping("/shops/orderByDiscount")
-    public String orderByDiscount() {
+    public String orderByDiscountPost(){
+        return "redirect:/shops";
+    }
+
+    @GetMapping("/shops/orderByDiscountDesc")
+    public String orderByDiscountDescGet(Model model) {
+        model.addAttribute("shops", service.orderByDiscountDesc());
+        return "shops";
+    }
+
+    @PostMapping("/shops/orderByDiscountDesc")
+    public String orderByDiscountDescPost(){
         return "redirect:/shops";
     }
 

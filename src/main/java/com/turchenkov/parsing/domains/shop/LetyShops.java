@@ -17,6 +17,10 @@ public class LetyShops extends Shop {
         super(name, discount, label, pageOnTheSite, image);
     }
 
+    public LetyShops(Long id, String name, double discount, String label, String pageOnTheSite, String image) {
+        super(id, name, discount, label, pageOnTheSite, image);
+    }
+
     @Override
     public String toString() {
         return "LetyShops{" +

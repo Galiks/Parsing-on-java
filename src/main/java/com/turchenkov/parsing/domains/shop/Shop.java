@@ -1,5 +1,6 @@
 package com.turchenkov.parsing.domains.shop;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "Shops")
+@AllArgsConstructor
 public abstract class Shop {
 
     @Id

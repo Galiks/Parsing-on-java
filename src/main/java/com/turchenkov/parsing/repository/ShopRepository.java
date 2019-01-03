@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ShopRepository extends CrudRepository<Shop, Long> {
-    Iterable<Shop> getAllByDiscount(double discount);
+
+    Iterable<Shop> findAllByOrderByDiscount();
+
+    Iterable<Shop> findAllByOrderByDiscountDesc();
 
     Iterable<Shop> findAllByOrderByName();
 

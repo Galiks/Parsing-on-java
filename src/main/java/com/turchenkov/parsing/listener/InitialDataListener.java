@@ -1,7 +1,10 @@
 package com.turchenkov.parsing.listener;
 
+import com.turchenkov.parsing.domains.shop.LetyShops;
+import com.turchenkov.parsing.domains.shop.Shop;
 import com.turchenkov.parsing.domains.user.Role;
 import com.turchenkov.parsing.domains.user.User;
+import com.turchenkov.parsing.repository.ShopRepository;
 import com.turchenkov.parsing.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -19,6 +22,9 @@ public class InitialDataListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ShopRepository shopRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {

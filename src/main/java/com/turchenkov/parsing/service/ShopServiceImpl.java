@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class ParsingServiceImpl implements ParsingService {
+public class ShopServiceImpl implements ShopService {
 
     @Autowired
     ShopRepository shopRepository;
@@ -40,10 +40,20 @@ public class ParsingServiceImpl implements ParsingService {
     }
 
     @Override
-    public List<Shop> update() {
+    public void update() {
         deleteAllFromDB();
         parsingAndSaveInDB();
-        return getListOfShop();
+        getListOfShop();
+    }
+
+    @Override
+    public List<Shop> orderByDiscount() {
+        return (List<Shop>) shopRepository.findAllByOrderByDiscount();
+    }
+
+    @Override
+    public List<Shop> orderByDiscountDesc() {
+        return (List<Shop>) shopRepository.findAllByOrderByDiscountDesc();
     }
 
 

@@ -17,11 +17,14 @@ public class Timer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     private Long time;
 
     private String date;
 
-    public Timer(Long time, String date) {
+    public Timer(String name, Long time, String date) {
+        this.name = name;
         this.time = time;
         this.date = date;
     }
