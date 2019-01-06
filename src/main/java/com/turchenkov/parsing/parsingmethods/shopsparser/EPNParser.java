@@ -31,13 +31,21 @@ public class EPNParser implements ParserInterface {
     @Value("${parsing.site.epn}")
     private String addressOfSite;
 
-    private final String startURL = "https://epn.bz/ru/cashback/shops/page/1";
-    private final String checkWord = "Новый";
-    private final String userAgent = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
-    private final String parsingURL = "https://epn.bz/ru/cashback/shops/page/";
+    @Value("${parsing.useragent}")
+    private String userAgent;
+
+    @Value("${parsing.site.epn.checkword}")
+    private String checkWord;
+
+    @Value("${parsing.site.epn.startURL}")
+    private String startURL;
+
+    @Value("${parsing.site.epn.parsingURL}")
+    private String parsingURL;
+
     private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
     private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
-    private final int THREADS = 6;
+    private final int THREADS = 4;
     private final ExecutorService pool;
 
     public EPNParser() {

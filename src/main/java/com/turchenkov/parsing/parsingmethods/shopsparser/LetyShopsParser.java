@@ -40,29 +40,6 @@ public class LetyShopsParser implements ParserInterface {
     private final int THREADS = 4;
     private final ExecutorService pool;
 
-    public String getAddressOfSite() {
-        return addressOfSite;
-    }
-
-    public void setAddressOfSite(String addressOfSite) {
-        this.addressOfSite = addressOfSite;
-    }
-
-    public String getPatternDiscount() {
-        return patternDiscount;
-    }
-
-    public void setPatternDiscount(String patternDiscount) {
-        this.patternDiscount = patternDiscount;
-    }
-
-    public String getPatternLabel() {
-        return patternLabel;
-    }
-
-    public void setPatternLabel(String patternLabel) {
-        this.patternLabel = patternLabel;
-    }
 
     public LetyShopsParser() {
 
