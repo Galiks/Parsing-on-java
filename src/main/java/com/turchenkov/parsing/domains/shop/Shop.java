@@ -2,6 +2,7 @@ package com.turchenkov.parsing.domains.shop;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Data
 @Table(name = "Shops")
 @AllArgsConstructor
+@NoArgsConstructor
 public abstract class Shop {
 
     @Id
@@ -36,8 +38,5 @@ public abstract class Shop {
         this.label = label;
         this.pageOnTheSite = pageOnTheSite;
         this.image = image;
-    }
-
-    public Shop() {
     }
 }

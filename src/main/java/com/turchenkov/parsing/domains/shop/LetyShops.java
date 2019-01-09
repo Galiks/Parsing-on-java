@@ -1,25 +1,22 @@
 package com.turchenkov.parsing.domains.shop;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class LetyShops extends Shop {
-
-    public LetyShops() {
-    }
 
     public LetyShops(String name, double discount, String label, String pageOnTheSite, String image) {
         super(name, discount, label, pageOnTheSite, image);
     }
 
-    public LetyShops(Long id, String name, double discount, String label, String pageOnTheSite, String image) {
-        super(id, name, discount, label, pageOnTheSite, image);
-    }
 
     @Override
     public String toString() {
@@ -31,4 +28,6 @@ public class LetyShops extends Shop {
                 ", image='" + getImage() + '\'' +
                 '}';
     }
+
+
 }

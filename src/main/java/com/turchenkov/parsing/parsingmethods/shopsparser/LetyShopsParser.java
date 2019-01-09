@@ -10,8 +10,10 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -29,12 +31,6 @@ public class LetyShopsParser implements ParserInterface {
     @Value("${parsing.site.letyshops}")
     private String addressOfSite;
 
-    @Value("${parsing.pattern.discount}")
-    private String patternDiscount;
-
-    @Value("${parsing.pattern.label}")
-    private String patternLabel;
-
     private Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
     private Pattern patternForLabel  = Pattern.compile("[$%€]|руб|(р.)|cent");
     private final int THREADS = 4;
@@ -51,7 +47,7 @@ public class LetyShopsParser implements ParserInterface {
     public List<Shop> parsing() {
         int maxPage = getMaxPage();
 
-        List<Future<List<Shop>>> futures = new ArrayList<>();
+        List<Future<List<Shop>>> futures = new LinkedList<>();
         List<Shop> result;
         try {
             for (int i = 1; i <= maxPage; i++) {
@@ -60,10 +56,15 @@ public class LetyShopsParser implements ParserInterface {
             }
             result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
         } finally {
-            pool.shutdown();
+
         }
 
         return result;
+    }
+
+    @PreDestroy
+    private void destroy(){
+        pool.shutdown();
     }
 
     private Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
@@ -81,7 +82,7 @@ public class LetyShopsParser implements ParserInterface {
         Document document = Jsoup.connect("https://letyshops.com/shops?page=" + i).get();
         Elements items = document.getElementsByClass("b-teaser__inner");
 
-        List<Shop> pageResult = new ArrayList<>();
+        List<Shop> pageResult = new LinkedList<>();
         for (Element item : items) {
             String title = getName(item);
             String pagesOnTheSite = getPagesOnTheSite(item);

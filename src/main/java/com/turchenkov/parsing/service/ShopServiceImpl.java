@@ -40,10 +40,10 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public void update() {
+    public List<Shop> update() {
         deleteAllFromDB();
         parsingAndSaveInDB();
-        getListOfShop();
+        return getListOfShop();
     }
 
     @Override

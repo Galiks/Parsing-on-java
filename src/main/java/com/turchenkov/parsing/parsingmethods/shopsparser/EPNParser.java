@@ -10,8 +10,10 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class EPNParser implements ParserInterface {
+public class EPNParser {
 
     //избавить от констант, перенеся их в application.properties
 
@@ -53,11 +55,11 @@ public class EPNParser implements ParserInterface {
     }
 
     @Timer
-    @Override
+//    @Override
     public List<Shop> parsing() {
         int maxPage = getMaxPage();
 
-        List<Future<List<Shop>>> futures = new ArrayList<>();
+        List<Future<List<Shop>>> futures = new LinkedList<>();
         List<Shop> result;
         try {
             for (int i = 1; i <= maxPage; i++) {
@@ -66,10 +68,15 @@ public class EPNParser implements ParserInterface {
             }
             result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
         } finally {
-            pool.shutdown();
+
         }
 
         return result;
+    }
+
+    @PreDestroy
+    private void destroy(){
+        pool.shutdown();
     }
 
     private Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
@@ -103,7 +110,7 @@ public class EPNParser implements ParserInterface {
 
         Elements elements = document.select("div.shop-list__item");
 
-        List<Shop> epnList = new ArrayList<>();
+        List<Shop> epnList = new LinkedList<>();
 
         for (Element element : elements) {
             if (element.text().contains(checkWord)) {

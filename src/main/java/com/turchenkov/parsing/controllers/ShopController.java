@@ -24,7 +24,7 @@ public class ShopController {
         return "redirect:/shops";
     }
 
-    @PostMapping("/shops/update")
+    @PostMapping("/update")
     public String updateShopsPost() {
         service.update();
         return "redirect:/shops";
@@ -36,10 +36,10 @@ public class ShopController {
         return "shops";
     }
 
-    @PostMapping("/shops/orderByDiscount")
-    public String orderByDiscountPost(){
-        return "redirect:/shops";
-    }
+//    @PostMapping("/shops/orderByDiscount")
+//    public String orderByDiscountPost(){
+//        return "redirect:";
+//    }
 
     @GetMapping("/shops/orderByDiscountDesc")
     public String orderByDiscountDescGet(Model model) {
@@ -47,9 +47,9 @@ public class ShopController {
         return "shops";
     }
 
-    @PostMapping("/shops/orderByDiscountDesc")
-    public String orderByDiscountDescPost(){
-        return "redirect:/shops";
-    }
+//    @PostMapping("/shops/orderByDiscountDesc")
+//    public String orderByDiscountDescPost(){
+//        return "redirect:";
+//    }
 
 }

@@ -10,7 +10,7 @@ public interface ShopService {
     void parsingAndSaveInDB();
     void deleteAllFromDB();
     List<Shop> getListOfShop();
-    void update();
+    List<Shop> update();
     List<Shop> orderByDiscount();
     List<Shop> orderByDiscountDesc();
 }
