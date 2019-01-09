@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class LetyShops extends Shop {
+public final class LetyShops extends Shop {
 
     public LetyShops(String name, double discount, String label, String pageOnTheSite, String image) {
         super(name, discount, label, pageOnTheSite, image);

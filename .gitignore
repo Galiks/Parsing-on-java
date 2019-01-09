@@ -72,3 +72,4 @@ target/classes/templates/shops.html
 target/classes/application.properties
 target/classes/templates/shops.html
 target/classes/application.properties
+.idea/parsing.iml

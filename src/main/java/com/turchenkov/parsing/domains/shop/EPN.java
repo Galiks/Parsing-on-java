@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class EPN extends Shop {
+public final class EPN extends Shop {
 
     public EPN() {
     }

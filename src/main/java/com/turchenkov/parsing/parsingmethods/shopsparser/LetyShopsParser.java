@@ -3,10 +3,13 @@ package com.turchenkov.parsing.parsingmethods.shopsparser;
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.LetyShops;
 import com.turchenkov.parsing.domains.shop.Shop;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +39,8 @@ public class LetyShopsParser implements ParserInterface {
     private final int THREADS = 4;
     private final ExecutorService pool;
 
+    private static final Logger log = LoggerFactory.getLogger(LetyShopsParser.class);
+
 
     public LetyShopsParser() {
 
@@ -45,6 +50,7 @@ public class LetyShopsParser implements ParserInterface {
     @Timer
     @Override
     public List<Shop> parsing() {
+        log.info("Начался парсинг");
         int maxPage = getMaxPage();
 
         List<Future<List<Shop>>> futures = new LinkedList<>();
@@ -59,6 +65,7 @@ public class LetyShopsParser implements ParserInterface {
 
         }
 
+        log.info("Парсинг закончился");
         return result;
     }
 
@@ -132,6 +139,7 @@ public class LetyShopsParser implements ParserInterface {
                     .getElementsByClass("b-pagination__item");
             return Integer.parseInt(elements.get(elements.size() - 2).text());
         } catch (IOException e) {
+            log.error("IOException");
             e.printStackTrace();
             return 0;
         }
