@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class EPNParser {
+public class EPNParser{
 
     //избавить от констант, перенеся их в application.properties
 

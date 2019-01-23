@@ -1,5 +1,6 @@
 package com.turchenkov.parsing.parsingmethods.shopsparser;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.Shop;
 import org.springframework.stereotype.Component;
@@ -10,5 +11,5 @@ import java.util.List;
 @Component
 public interface ParserInterface {
 
-    List<Shop> parsing() throws IOException, InterruptedException;
+    List<Shop> parsing() throws IOException, InterruptedException, UnirestException;
 }

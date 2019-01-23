@@ -1,5 +1,6 @@
 package com.turchenkov.parsing.controllers;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.service.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class ShopController {
     }
 
     @PostMapping("/update")
-    public String updateShopsPost() {
+    public String updateShopsPost() throws UnirestException {
         service.update();
         return "redirect:/shops";
     }

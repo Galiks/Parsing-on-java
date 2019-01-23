@@ -18,10 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,41 +26,41 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class LetyShopsParser implements ParserInterface {
+public class LetyShopsParser {
 
     @Value("${parsing.site.letyshops}")
     private String addressOfSite;
 
-    private Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
-    private Pattern patternForLabel  = Pattern.compile("[$%€]|руб|(р.)|cent");
-    private final int THREADS = 4;
+    private final Pattern patternForDiscount;
+    private final Pattern patternForLabel;
     private final ExecutorService pool;
+    private final CompletionService<List<Shop>> completionService;
 
     private static final Logger log = LoggerFactory.getLogger(LetyShopsParser.class);
 
 
     public LetyShopsParser() {
 
+        int THREADS = 4;
         this.pool = Executors.newFixedThreadPool(THREADS);
+        completionService = new ExecutorCompletionService<>(this.pool);
+        patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
+        patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
     }
 
     @Timer
-    @Override
+//    @Override
     public List<Shop> parsing() {
         log.info("Начался парсинг");
         int maxPage = getMaxPage();
 
         List<Future<List<Shop>>> futures = new LinkedList<>();
         List<Shop> result;
-        try {
-            for (int i = 1; i <= maxPage; i++) {
-                final int finalI = i;
-                futures.add(pool.submit(() -> parsElements(finalI)));
-            }
-            result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
-        } finally {
-
+        for (int i = 1; i <= maxPage; i++) {
+            final int finalI = i;
+            futures.add(completionService.submit(() -> parsElements(finalI)));
         }
+        result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
 
         log.info("Парсинг закончился");
         return result;
