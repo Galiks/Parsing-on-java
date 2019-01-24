@@ -17,5 +17,14 @@ public final class Cash4Brands extends Shop {
         super(name, discount, label, pageOnTheSite, image);
     }
 
-
+    @Override
+    public String toString() {
+        return "Cash4Brands{" +
+                "name='" + getName() + '\'' +
+                ", discount=" + getDiscount() +
+                ", label='" + getLabel() + '\'' +
+                ", pageOnTheSite='" + getPageOnTheSite() + '\'' +
+                ", image='" + getImage() + '\'' +
+                '}';
+    }
 }

@@ -39,4 +39,16 @@ public abstract class Shop {
         this.pageOnTheSite = pageOnTheSite;
         this.image = image;
     }
+
+    @Override
+    public String toString() {
+        return "Shop{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", discount=" + discount +
+                ", label='" + label + '\'' +
+                ", pageOnTheSite='" + pageOnTheSite + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

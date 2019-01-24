@@ -1,6 +1,10 @@
 package com.turchenkov.parsing;
 
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.turchenkov.parsing.domains.shop.Shop;
 import com.turchenkov.parsing.parsingmethods.shopsparser.Cash4BrandsParser;
 import com.turchenkov.parsing.parsingmethods.shopsparser.LetyShopsParser;
 import org.slf4j.Logger;
@@ -22,9 +26,18 @@ public class ParsingApplication {
         log.info("Приложение стартовало");
         SpringApplication.run(ParsingApplication.class, args);
 
+
 //        Cash4BrandsParser cash4BrandsParser = new Cash4BrandsParser();
-//        for (String s : cash4BrandsParser.getShopPages()) {
-//            System.out.println(s);
+//        for (Shop shop : cash4BrandsParser.parsing()) {
+//            System.out.println(shop);
+//        }
+//        for (Shop shop : cash4BrandsParser.parsing()) {
+//            System.out.println(shop);
+//        }
+
+//        LetyShopsParser letyShopsParser = new LetyShopsParser();
+//        for (Shop shop : letyShopsParser.parsing()) {
+//            System.out.println(shop);
 //        }
 
     }
