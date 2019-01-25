@@ -94,8 +94,10 @@ public class Cash4BrandsParser implements ParserInterface {
         String image = getImage(document);
         Double discount = getDiscount(document);
         String label = getLabel(document);
-        Shop cash4Brands = new Cash4Brands(name, discount, label, pageOfShop, image);
-        return cash4Brands;
+        if (name != null & image != null & discount != Double.NaN & label != null) {
+            return new Cash4Brands(name, discount, label, pageOfShop, image);
+        }
+        return null;
     }
 
     private Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
@@ -117,7 +119,7 @@ public class Cash4BrandsParser implements ParserInterface {
             return labelMatcher.group();
         }
 
-        return "LABEL";
+        return null;
     }
 
     private Double getDiscount(Document document) {
@@ -128,7 +130,7 @@ public class Cash4BrandsParser implements ParserInterface {
             return Double.parseDouble(discountMatcher.group());
         }
 
-        return 666666.6666;
+        return Double.NaN;
     }
 
     private String getImage(Document document) {
@@ -136,7 +138,7 @@ public class Cash4BrandsParser implements ParserInterface {
         if (result != null) {
             return addressOfSite+result;
         } else {
-            return "IMAGE";
+            return null;
         }
     }
 
@@ -145,7 +147,7 @@ public class Cash4BrandsParser implements ParserInterface {
         if (name != null) {
             return name;
         } else {
-            return "NAME";
+            return null;
         }
     }
 
@@ -153,7 +155,6 @@ public class Cash4BrandsParser implements ParserInterface {
         Set<String> result = new HashSet<>();
         int maxPage = (getMaxShops() + startingShops) / shopsOnPage;
         for (int i = 1; i <= maxPage; i++) {
-//            Unirest.setTimeouts(10000,0);
             HttpResponse<String> response = null;
             try {
                 response = Unirest.post("https://cash4brands.ru/cashback/")
@@ -165,6 +166,8 @@ public class Cash4BrandsParser implements ParserInterface {
             } catch (UnirestException e) {
                 e.printStackTrace();
             }
+
+//            System.out.println(response.getBody());
 
             Matcher matcher = pattern.matcher(response.getBody());
             while (matcher.find()) {

@@ -23,7 +23,12 @@ public class ShopServiceImpl implements ShopService {
     public void parsingAndSaveInDB() throws UnirestException {
         for (ParserInterface parser : parsers) {
             try {
-                shopRepository.saveAll(parser.parsing());
+//                shopRepository.saveAll(parser.parsing());
+                for (Shop shop : parser.parsing()) {
+                  if (shop != null){
+                      shopRepository.save(shop);
+                  }
+                }
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }

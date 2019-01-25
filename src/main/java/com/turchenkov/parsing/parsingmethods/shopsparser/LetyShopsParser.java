@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class LetyShopsParser  {
+public class LetyShopsParser /*implements ParserInterface*/ {
 
     @Value("${parsing.site.letyshops}")
     private String addressOfSite;
