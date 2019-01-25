@@ -1,5 +1,5 @@
 .idea
-target
+target/*
 
 # Compiled class file
 *.class
@@ -24,52 +24,3 @@ target
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-src/main/java/com/turchenkov/testing/Main.java
-.idea/workspace.xml
-.idea/workspace.xml
-target/classes/application.properties
-.idea/parsing.iml
-.idea/parsing.iml
-.idea/workspace.xml
-.idea/libraries/Maven__com_h2database_h2_1_4_197.xml
-.idea/libraries/Maven__org_springframework_security_spring_security_test_5_1_1_RELEASE.xml
-.idea/parsing.iml
-.idea/workspace.xml
-target/classes/application.properties
-target/classes/templates/shops.html
-target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
-target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
-target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
-target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
-target/surefire-reports/com.turchenkov.parsing.ParsingApplicationTests.txt
-target/surefire-reports/TEST-com.turchenkov.parsing.ParsingApplicationTests.xml
-.idea/libraries/Maven__com_h2database_h2_1_4_197.xml
-.idea/libraries/Maven__org_springframework_security_spring_security_test_5_1_1_RELEASE.xml
-.idea/parsing.iml
-.idea/workspace.xml
-target/classes/application.properties
-target/classes/templates/shops.html
-target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
-target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
-target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
-target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
-target/surefire-reports/com.turchenkov.parsing.ParsingApplicationTests.txt
-target/surefire-reports/TEST-com.turchenkov.parsing.ParsingApplicationTests.xml
-.idea/workspace.xml
-target/classes/application.properties
-target/classes/templates/shops.html
-.idea/parsing.iml
-target/surefire-reports/TEST-com.turchenkov.parsing.ParsingApplicationTests.xml
-target/surefire-reports/com.turchenkov.parsing.ParsingApplicationTests.txt
-target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
-target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
-target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
-target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
-target/classes/templates/shops.html
-target/classes/application.properties
-.idea/dataSources/f588b4bc-244f-4099-8689-1d9844d81f8e.xml
-target/classes/templates/shops.html
-target/classes/application.properties
-target/classes/templates/shops.html
-target/classes/application.properties
-.idea/parsing.iml
