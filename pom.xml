@@ -122,6 +122,13 @@
             <version>20140107</version>
         </dependency>
 
+        <!--Selenium-->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
