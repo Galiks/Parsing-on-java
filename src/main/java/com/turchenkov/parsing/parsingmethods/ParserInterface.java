@@ -1,4 +1,4 @@
-package com.turchenkov.parsing.parsingmethods.shopsparser;
+package com.turchenkov.parsing.parsingmethods;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.customannotation.Timer;
@@ -11,5 +11,5 @@ import java.util.List;
 @Component
 public interface ParserInterface {
 
-    List<Shop> parsing() throws IOException, InterruptedException, UnirestException;
+    List<Shop> parsing() throws IOException;
 }

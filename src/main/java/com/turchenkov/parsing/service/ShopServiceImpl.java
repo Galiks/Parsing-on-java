@@ -2,7 +2,7 @@ package com.turchenkov.parsing.service;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.domains.shop.Shop;
-import com.turchenkov.parsing.parsingmethods.shopsparser.ParserInterface;
+import com.turchenkov.parsing.parsingmethods.ParserInterface;
 import com.turchenkov.parsing.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class ShopServiceImpl implements ShopService {
     private List<ParserInterface> parsers;
 
     @Override
-    public void parsingAndSaveInDB() throws UnirestException {
+    public void parsingAndSaveInDB() {
         for (ParserInterface parser : parsers) {
             try {
 //                shopRepository.saveAll(parser.parsing());
@@ -29,7 +29,7 @@ public class ShopServiceImpl implements ShopService {
                       shopRepository.save(shop);
                   }
                 }
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -46,7 +46,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> update() throws UnirestException {
+    public List<Shop> update() {
         deleteAllFromDB();
         parsingAndSaveInDB();
         return getListOfShop();

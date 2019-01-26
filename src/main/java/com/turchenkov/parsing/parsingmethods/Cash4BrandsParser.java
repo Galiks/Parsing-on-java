@@ -51,12 +51,12 @@ public class Cash4BrandsParser implements ParserInterface {
 
     @Override
     @Timer
-    public List<Shop> parsing() throws IOException{
+    public List<Shop> parsing() throws IOException {
 
 
         List<Future<List<Shop>>> futures = new LinkedList<>();
         List<Shop> result;
-        List<String> shopPages = new ArrayList<>(getShopPages());
+        final List<String> shopPages = new ArrayList<>(getShopPages());
 
         for (int i = 0; i < shopPages.size(); i++) {
 

@@ -1,4 +1,4 @@
-package com.turchenkov.parsing.parsingmethods.shopsparser;
+package com.turchenkov.parsing.parsingmethods;
 
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.EPN;

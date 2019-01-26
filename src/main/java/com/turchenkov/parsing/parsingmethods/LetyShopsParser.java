@@ -1,4 +1,4 @@
-package com.turchenkov.parsing.parsingmethods.shopsparser;
+package com.turchenkov.parsing.parsingmethods;
 
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.LetyShops;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.*;
