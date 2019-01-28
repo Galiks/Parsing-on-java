@@ -1,17 +1,14 @@
-package com.turchenkov.parsing.parsingmethods.shopsparser;
+package com.turchenkov.parsing.parsingmethods;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.Cash4Brands;
-import com.turchenkov.parsing.domains.shop.LetyShops;
 import com.turchenkov.parsing.domains.shop.Shop;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;

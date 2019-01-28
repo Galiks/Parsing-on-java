@@ -2,6 +2,7 @@ package com.turchenkov.parsing;
 
 
 import com.turchenkov.parsing.parsingmethods.LetyShopsParser;
+import com.turchenkov.parsing.parsingmethods.MegaBonusParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -18,9 +19,12 @@ public class ParsingApplication {
 //    1722
 
     public static void main(String[] args) throws Exception {
-        log.info("Приложение стартовало");
-        SpringApplication.run(ParsingApplication.class, args);
+//        log.info("Приложение стартовало");
+//        SpringApplication.run(ParsingApplication.class, args);
 
+
+        MegaBonusParser megaBonusParser = new MegaBonusParser();
+        megaBonusParser.parsing();
 
     }
 }
