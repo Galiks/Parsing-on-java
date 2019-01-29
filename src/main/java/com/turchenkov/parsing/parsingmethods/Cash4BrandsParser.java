@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class Cash4BrandsParser implements ParserInterface {
+public class Cash4BrandsParser /*implements ParserInterface*/ {
 
     private final int startingShops = 8;
     private final int shopsOnPage = 12;
@@ -46,21 +46,27 @@ public class Cash4BrandsParser implements ParserInterface {
         this.pattern = Pattern.compile(patternForPage);
     }
 
-    @Override
+//    @Override
     @Timer
     public List<Shop> parsing() throws IOException {
 
 
-        List<Future<List<Shop>>> futures = new LinkedList<>();
-        List<Shop> result;
+        List<Future<Shop>> futures = new LinkedList<>();
+        List<Shop> result = new ArrayList<>();
         final List<String> shopPages = new ArrayList<>(getShopPages());
 
         for (int i = 0; i < shopPages.size(); i++) {
 
             final int finalI = i;
-            futures.add(pool.submit(() -> parsElements(shopPages.get(finalI))));
+            futures.add(pool.submit(() -> parseElements(shopPages.get(finalI))));
         }
-        result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
+        for (Future<Shop> future : futures) {
+            try {
+                result.add(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
 
         return result;
     }
@@ -70,18 +76,17 @@ public class Cash4BrandsParser implements ParserInterface {
         pool.shutdown();
     }
 
-    private List<Shop> parsElements(String shop) throws IOException {
-        List<Shop> pageResult = new ArrayList<>();
+    private Shop parseElements(String shop) throws IOException {
+
         try {
-            pageResult.add(getShops(shop));
+            return getShops(shop);
         } catch (HttpStatusException http) {
             http.printStackTrace();
             System.out.println(http.getStatusCode());
             System.out.println(http.getUrl());
-            parsElements(shop);
+            parseElements(shop);
         }
-
-        return pageResult;
+        return null;
     }
 
     private Shop getShops(String pageOfShop) throws IOException {
@@ -95,17 +100,6 @@ public class Cash4BrandsParser implements ParserInterface {
             return new Cash4Brands(name, discount, label, pageOfShop, image);
         }
         return null;
-    }
-
-    private Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
-        return it -> {
-            try {
-                return it.get().stream();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                return Stream.empty();
-            }
-        };
     }
 
     private String getLabel(Document document) {
