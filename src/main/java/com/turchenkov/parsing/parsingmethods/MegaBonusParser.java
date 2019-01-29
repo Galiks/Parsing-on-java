@@ -1,12 +1,18 @@
 package com.turchenkov.parsing.parsingmethods;
 
+import com.turchenkov.parsing.domains.shop.MegaBonus;
 import com.turchenkov.parsing.domains.shop.Shop;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,83 +20,106 @@ import java.util.regex.Pattern;
 public class MegaBonusParser implements ParserInterface {
 
     private final String patternForShopsPage = ":\"\\\\\\/shop\\\\\\/[^'!@\"#$%^&*()=+№;:?\\\\\\/]+";
+    private final Pattern pattern = Pattern.compile(patternForShopsPage);
     private final String userAgent = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
+    private final Pattern patternForTrueShopPage = Pattern.compile("\"(.*?)\"");
+    private final Pattern patternForFunctionOfUrl = Pattern.compile("url \\+=(.*?);");
+    private final Pattern patternForInitialParameterOfUrl = Pattern.compile("\\(\"(.*?)\"\\)");
+    private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent|р|Р");
 
     @Override
     public List<Shop> parsing() throws IOException {
-//        Pattern pattern = Pattern.compile(patternForShopsPage);
-//
-//        List<Shop> result = new ArrayList<>();
-//
-//        System.setProperty("webdriver.chrome.driver", "E:/Download/chromedriver_win32/chromedriver.exe");
-//        WebDriver driver = new ChromeDriver();
-//        driver.navigate().to("https://megabonus.com/feed");
-//
-//        Set<String> pages = new HashSet<>();
-//        Matcher matcher1 = pattern.matcher(driver.getPageSource());
-//        while (matcher1.find()) {
-//            pages.add("https://megabonus.com/shop" + matcher1.group().substring(9));
-//        }
-//
-//        System.out.println("Result size: " + pages.size());
-//
-//        List<String> newPages = new ArrayList<>(pages);
-//
-//        for (String page : newPages) {
-//            parseElements(page);
-//        }
 
-//        "https://megabonus.com/shop/xistoreby?utm_referrer=&fa821dba_ipp_key=v1548584423101%2fv3394bdaf330c859c7e1f061638eca2afa04ab3%2fukK3Po4P9qM%2bnFsQSL0xNA%3d%3d&fa821dba_ipp_uid=1548584423101%2f2mnS1fKfLUqmovXK%2f7XfKbe8edmcz%2bnCkLXEoGg%3d%3d&fa821dba_ipp_uid1=1548584423101&fa821dba_ipp_uid2=2mnS1fKfLUqmovXK%2f7XfKbe8edmcz%2bnCkLXEoGg%3d%3d"
 
-        Pattern patternForTrueShopPage = Pattern.compile("\"(.*?)\"");
-        Pattern patternForFunctionOfUrl = Pattern.compile("url \\+=(.*?);");
-        Pattern patternForInitialParametrOfUrl = Pattern.compile("\\(\"(.*?)\"\\)");
+        List<Shop> result = new ArrayList<>();
 
-        Document document = Jsoup.connect("https://megabonus.com/shop/mvideo").get();
-//        System.out.println(document.location());
-        Document document1 = Jsoup.connect(document.location()).userAgent(userAgent).get();
-        System.out.println(document1.outerHtml());
-        System.out.println();
-        String resultURL = "";
+        System.setProperty("webdriver.chrome.driver", "E:/Download/chromedriver_win32/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.navigate().to("https://megabonus.com/feed");
 
-        Matcher matcher2 = patternForInitialParametrOfUrl.matcher(document1.outerHtml());
-        if (matcher2.find()){
-            resultURL += matcher2.group(1);
+        Set<String> pages = new HashSet<>();
+        Matcher matcher1 = pattern.matcher(driver.getPageSource());
+        while (matcher1.find()) {
+            pages.add("https://megabonus.com/shop" + matcher1.group().substring(9));
         }
 
-        Matcher matcher = patternForFunctionOfUrl.matcher(document1.outerHtml());
+        List<String> newPages = new ArrayList<>(pages);
 
-        if (matcher.find()){
-//            System.out.println(matcher.group(1));
-            Matcher matcher1 = patternForTrueShopPage.matcher(matcher.group(1));
-            while (matcher1.find()){
-                resultURL += matcher1.group(1);
-            }
+
+        List<String> pages1 = getTruePages(newPages);
+
+        for (String s : pages1) {
+            parseElements(s);
         }
 
 
-        System.out.println(resultURL);
-
-
-
-//        Document document2 = Jsoup.connect("https://megabonus.com/shop/xistoreby?utm_referrer=&fa821dba_ipp_key=v1548584423101%2fv3394bdaf330c859c7e1f061638eca2afa04ab3%2fukK3Po4P9qM%2bnFsQSL0xNA%3d%3d&fa821dba_ipp_uid=1548584423101%2f2mnS1fKfLUqmovXK%2f7XfKbe8edmcz%2bnCkLXEoGg%3d%3d&fa821dba_ipp_uid1=1548584423101&fa821dba_ipp_uid2=2mnS1fKfLUqmovXK%2f7XfKbe8edmcz%2bnCkLXEoGg%3d%3d").get();
-//        System.out.println(document2.outerHtml());
-
-
-//        System.out.println(document1.outerHtml());
-//        for (Element element : name) {
-//            System.out.println(element.text());
-//        }
-
-
-            return null;
+        return null;
     }
 
-    private Shop parseElements(String shop) throws IOException {
+    private List<String> getTruePages(List<String> dirtyPages) throws IOException {
+        List<String> result = new ArrayList<>();
 
-        Document document = Jsoup.connect(shop).userAgent(userAgent).post();
-        System.out.println(document.outerHtml());
-        System.out.println();
+        for (String dirtyPage : dirtyPages) {
+            StringBuilder resultURL = new StringBuilder();
+
+
+            Document document = Jsoup.connect(dirtyPage).get();
+            String document1 = Jsoup.connect(document.location()).userAgent(userAgent).get().outerHtml();
+
+
+            Matcher matcher2 = patternForInitialParameterOfUrl.matcher(document1);
+            if (matcher2.find()) {
+                resultURL.append(matcher2.group(1));
+            }
+
+            Matcher matcher = patternForFunctionOfUrl.matcher(document1);
+
+            if (matcher.find()) {
+                Matcher matcher1 = patternForTrueShopPage.matcher(matcher.group(1));
+                while (matcher1.find()) {
+                    resultURL.append(matcher1.group(1));
+                }
+            }
+
+            result.add(resultURL.toString());
+        }
+
+        return result;
+    }
+
+    private Shop parseElements(String shop) {
+
+        Document document;
+        try {
+            document = Jsoup.connect(shop).get();
+        } catch (IOException e) {
+            return null;
+        }
+        String name = document.getElementsByClass("shop-content").attr("data-shop");
+        String image = document.getElementsByClass("shop-img").first().getElementsByTag("img").attr("src");
+        Double discount = getDiscount(document);
+        String label = getLabel(document);
+        System.out.println(name);
+        if (name != null & image != null & discount != Double.NaN & label != null) {
+            return new MegaBonus(name, discount, label, shop, image);
+        }
+        return null;
+    }
+
+    private Double getDiscount(Document document){
+        Matcher matcher = patternForDiscount.matcher(document.getElementsByClass("cashback-price").text());
+        if (matcher.find()){
+            return Double.parseDouble(matcher.group());
+        }
+        return Double.NaN;
+    }
+
+    private String getLabel(Document document){
+        Matcher matcher = patternForLabel.matcher(document.getElementsByClass("cashback-price").text());
+        if (matcher.find()){
+            return matcher.group();
+        }
         return null;
     }
 }
