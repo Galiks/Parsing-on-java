@@ -22,15 +22,11 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void parsingAndSaveInDB() {
         for (ParserInterface parser : parsers) {
-            try {
-//                shopRepository.saveAll(parser.parsing());
-                for (Shop shop : parser.parsing()) {
-                  if (shop != null){
-                      shopRepository.save(shop);
-                  }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            //                shopRepository.saveAll(parser.parsing());
+            for (Shop shop : parser.parsing()) {
+              if (shop != null){
+                  shopRepository.save(shop);
+              }
             }
         }
     }

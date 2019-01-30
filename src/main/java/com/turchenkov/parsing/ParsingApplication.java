@@ -4,6 +4,7 @@ package com.turchenkov.parsing;
 import com.turchenkov.parsing.domains.shop.Cash4Brands;
 import com.turchenkov.parsing.domains.shop.Shop;
 import com.turchenkov.parsing.parsingmethods.Cash4BrandsParser;
+import com.turchenkov.parsing.parsingmethods.CashbackoffParser;
 import com.turchenkov.parsing.parsingmethods.LetyShopsParser;
 import com.turchenkov.parsing.parsingmethods.MegaBonusParser;
 import org.slf4j.Logger;
@@ -26,16 +27,13 @@ public class ParsingApplication {
 //        SpringApplication.run(ParsingApplication.class, args);
 
 
-        MegaBonusParser megaBonusParser = new MegaBonusParser();
-        for (Shop shop : megaBonusParser.parsing()) {
-            System.out.println(shop);
-        }
-
-
-//        Cash4BrandsParser cash4BrandsParser = new Cash4BrandsParser();
-//        for (Shop shop : cash4BrandsParser.parsing()) {
+//        MegaBonusParser megaBonusParser = new MegaBonusParser();
+//        for (Shop shop : megaBonusParser.parsing()) {
 //            System.out.println(shop);
 //        }
+
+        CashbackoffParser cashbackoffParser = new CashbackoffParser();
+        cashbackoffParser.parsing();
     }
 }
 

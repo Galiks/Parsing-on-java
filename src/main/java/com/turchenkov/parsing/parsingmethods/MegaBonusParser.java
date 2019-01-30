@@ -38,7 +38,7 @@ public class MegaBonusParser implements ParserInterface {
     }
 
     @Override
-    public List<Shop> parsing() throws IOException {
+    public List<Shop> parsing(){
 
         System.setProperty("webdriver.chrome.driver", "E:/Download/chromedriver_win32/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
