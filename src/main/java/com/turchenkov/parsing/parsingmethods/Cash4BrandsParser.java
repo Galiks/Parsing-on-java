@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.Function;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class Cash4BrandsParser implements ParserInterface {
@@ -29,13 +29,12 @@ public class Cash4BrandsParser implements ParserInterface {
     private final String addressOfSite = "https://cash4brands.ru";
     private final String pageForParsing = "https://cash4brands.ru/cashback";
     private final String patternForMaxShops = "\\d+";
+    private final ExecutorService pool;
     Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
     Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent|р|Р");
     private Pattern patternForMaxShopsImpl;
     private String patternForPage = "\\/cashback\\/[^\\/]+";
     private Pattern pattern;
-    private final ExecutorService pool;
-
     //    @Value("${parsing.useragent}")
     private String userAgent = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
 
@@ -48,15 +47,19 @@ public class Cash4BrandsParser implements ParserInterface {
 
     @Override
     @Timer
-    public List<Shop> parsing() throws IOException {
+    public List<Shop> parsing() {
 
 
         List<Future<Shop>> futures = new LinkedList<>();
         List<Shop> result = new ArrayList<>();
 
-        for (String shopPage : getShopPages()) {
+        try {
+            for (String shopPage : getShopPages()) {
 
-            futures.add(pool.submit(() -> parseElements(shopPage)));
+                futures.add(pool.submit(() -> parseElements(shopPage)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         for (Future<Shop> future : futures) {
             try {
@@ -70,7 +73,7 @@ public class Cash4BrandsParser implements ParserInterface {
     }
 
     @PreDestroy
-    private void destroy(){
+    private void destroy() {
         pool.shutdown();
     }
 
@@ -125,7 +128,7 @@ public class Cash4BrandsParser implements ParserInterface {
     private String getImage(Document document) {
         String result = document.getElementsByClass("logo_shop").first().getElementsByTag("img").attr("src");
         if (result != null) {
-            return addressOfSite+result;
+            return addressOfSite + result;
         } else {
             return null;
         }

@@ -9,20 +9,32 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Tuple;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class CashbackoffParser implements ParserInterface {
 
     private final String addressOfSite = "https://cashbackoff.ru";
 
     private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
     private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    private ExecutorService pool;
+
+    public CashbackoffParser() {
+        int THREADS = 4;
+        this.pool = Executors.newFixedThreadPool(THREADS);
+    }
 
     @Override
     public List<Shop> parsing() {
@@ -35,10 +47,20 @@ public class CashbackoffParser implements ParserInterface {
 
         List<Shop> result = new ArrayList<>();
 
+        List<Future<Shop>> futureList = new ArrayList<>();
         Elements elements = document.getElementsByClass("stores-list-item");
 
+
         for (Element element : elements) {
-            result.add(parseElements(element));
+            futureList.add(pool.submit(() -> parseElements(element)));
+        }
+
+        for (Future<Shop> shopFuture : futureList) {
+            try {
+                result.add(shopFuture.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
         return result;

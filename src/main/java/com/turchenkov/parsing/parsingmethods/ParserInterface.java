@@ -11,5 +11,5 @@ import java.util.List;
 @Component
 public interface ParserInterface {
 
-    List<Shop> parsing() throws IOException;
+    List<Shop> parsing();
 }

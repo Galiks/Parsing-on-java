@@ -2,11 +2,9 @@ package com.turchenkov.parsing;
 
 
 import com.turchenkov.parsing.domains.shop.Cash4Brands;
+import com.turchenkov.parsing.domains.shop.Kopikot;
 import com.turchenkov.parsing.domains.shop.Shop;
-import com.turchenkov.parsing.parsingmethods.Cash4BrandsParser;
-import com.turchenkov.parsing.parsingmethods.CashbackoffParser;
-import com.turchenkov.parsing.parsingmethods.LetyShopsParser;
-import com.turchenkov.parsing.parsingmethods.MegaBonusParser;
+import com.turchenkov.parsing.parsingmethods.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +34,14 @@ public class ParsingApplication {
 //        for (Shop shop : cashbackoffParser.parsing()) {
 //            System.out.println(shop);
 //        }
+//        Long end = System.currentTimeMillis();
+
+        Long start = System.currentTimeMillis();
+        KopikotParser kopikotParser = new KopikotParser();
+        kopikotParser.parsing();
+        Long end = System.currentTimeMillis();
+        System.out.println("TIME : " + (end-start)/1000 );
+        System.out.println(kopikotParser.page);
     }
 }
 
