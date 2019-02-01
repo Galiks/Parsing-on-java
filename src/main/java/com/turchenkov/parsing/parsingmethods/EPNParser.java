@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class EPNParser /*implements ParserInterface*/{
+public class EPNParser implements ParserInterface{
 
     //избавить от констант, перенеся их в application.properties
 
@@ -55,7 +55,7 @@ public class EPNParser /*implements ParserInterface*/{
     }
 
     @Timer
-//    @Override
+    @Override
     public List<Shop> parsing() {
         int maxPage = getMaxPage();
 
@@ -117,29 +117,29 @@ public class EPNParser /*implements ParserInterface*/{
                 //избавиться от магического числа 22 - количество символов, после которых начинается дисконт, если есть слово "Новый"
                 if (element.text().length() > 22) {
 
-                    String pageOfShop = element.select("a[href]").attr("href");
-                    String fullURL = addressOfSite + pageOfShop;
-                    String name = getName(fullURL);
-                    Double discount = getDiscount(fullURL);
-                    String image = getImage(fullURL);
-                    String label = getLabel(fullURL);
-                    epnList.add(new EPN(name,discount,label, fullURL, image));
+                    getElements(epnList, element);
                 }
             } else {
                 //избавиться от магического числа 16 - количество символов, после которых начинается дисконт, если нет слова "Новый"
                 if (element.text().length() > 16) {
-                    String pageOfShop = element.select("a[href]").attr("href");
-                    String fullURL = addressOfSite + pageOfShop;
-                    String name = getName(fullURL);
-                    Double discount = getDiscount(fullURL);
-                    String image = getImage(fullURL);
-                    String label = getLabel(fullURL);
-                    epnList.add(new EPN(name,discount,label, fullURL, image));
+                    getElements(epnList, element);
                 }
             }
         }
 
         return epnList;
+    }
+
+    private void getElements(List<Shop> epnList, Element element) {
+        String pageOfShop = element.select("a[href]").attr("href");
+        String fullURL = addressOfSite + pageOfShop;
+        String name = getName(fullURL);
+        Double discount = getDiscount(fullURL);
+        String image = getImage(fullURL);
+        String label = getLabel(fullURL);
+        if (image != null & !Double.isNaN(discount)) {
+            epnList.add(new EPN(name, discount, label, fullURL, image));
+        }
     }
 
     private String getLabel(String url) {

@@ -38,7 +38,7 @@ public class MegaBonusParser implements ParserInterface {
     }
 
     @Override
-    public List<Shop> parsing(){
+    public List<Shop> parsing() {
 
         System.setProperty("webdriver.chrome.driver", "E:/Download/chromedriver_win32/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
@@ -51,16 +51,14 @@ public class MegaBonusParser implements ParserInterface {
             pages.add("https://megabonus.com/shop" + matcher1.group().substring(9));
         }
 
-        List<String> newPages = new ArrayList<>(pages);
 
         System.out.println("Block 1 started");
         Long start = System.currentTimeMillis();
 
         List<Future<String>> futuresPages = new ArrayList<>();
         List<String> shopPages = new ArrayList<>();
-        for (int i = 0; i < newPages.size(); i++){
-            final int finalI = i;
-            futuresPages.add(pool.submit(() -> getTruePages(newPages.get(finalI))));
+        for (String page : pages) {
+            futuresPages.add(pool.submit(() -> getTruePages(page)));
         }
 
         for (Future<String> futuresPage : futuresPages) {
@@ -72,7 +70,7 @@ public class MegaBonusParser implements ParserInterface {
         }
 
         Long end = System.currentTimeMillis();
-        System.out.println("Block 1 finished for " + (end-start) + " second");
+        System.out.println("Block 1 finished for " + (end - start) + " second");
 
         List<Shop> result = new ArrayList<>();
 
@@ -85,7 +83,7 @@ public class MegaBonusParser implements ParserInterface {
             }
         }
         end = System.currentTimeMillis();
-        System.out.println("Block 2 finished for " + (end-start) + " second");
+        System.out.println("Block 2 finished for " + (end - start) + " second");
 
 //        List<Future<Shop>> futures = new LinkedList<>();
 //        List<Shop> result = new ArrayList<>();
@@ -110,32 +108,32 @@ public class MegaBonusParser implements ParserInterface {
 
     private String getTruePages(String dirtyPage) throws IOException {
 
-            StringBuilder resultURL = new StringBuilder();
+        StringBuilder resultURL = new StringBuilder();
 
 
-            Document document = Jsoup.connect(dirtyPage).get();
-            String document1 = Jsoup.connect(document.location()).userAgent(userAgent).get().outerHtml();
+        Document document = Jsoup.connect(dirtyPage).get();
+        String document1 = Jsoup.connect(document.location()).userAgent(userAgent).get().outerHtml();
 
 
-            Matcher matcher2 = patternForInitialParameterOfUrl.matcher(document1);
-            if (matcher2.find()) {
-                resultURL.append(matcher2.group(1));
+        Matcher matcher2 = patternForInitialParameterOfUrl.matcher(document1);
+        if (matcher2.find()) {
+            resultURL.append(matcher2.group(1));
+        }
+
+        Matcher matcher = patternForFunctionOfUrl.matcher(document1);
+
+        if (matcher.find()) {
+            Matcher matcher1 = patternForTrueShopPage.matcher(matcher.group(1));
+            while (matcher1.find()) {
+                resultURL.append(matcher1.group(1));
             }
+        }
 
-            Matcher matcher = patternForFunctionOfUrl.matcher(document1);
-
-            if (matcher.find()) {
-                Matcher matcher1 = patternForTrueShopPage.matcher(matcher.group(1));
-                while (matcher1.find()) {
-                    resultURL.append(matcher1.group(1));
-                }
-            }
-
-            return resultURL.toString();
+        return resultURL.toString();
     }
 
     @PreDestroy
-    private void destroy(){
+    private void destroy() {
         pool.shutdown();
     }
 
@@ -166,7 +164,7 @@ public class MegaBonusParser implements ParserInterface {
 
     private String getImage(Document document) {
         String image = document.getElementsByClass("shop-img").first().getElementsByTag("img").attr("src");
-        if (image != null){
+        if (image != null) {
             return image;
         }
 
@@ -175,24 +173,24 @@ public class MegaBonusParser implements ParserInterface {
 
     private String getName(Document document) {
         String name = document.getElementsByClass("shop-content").attr("data-shop");
-        if (name != null){
+        if (name != null) {
             return name;
         }
 
         return null;
     }
 
-    private Double getDiscount(Document document){
+    private Double getDiscount(Document document) {
         Matcher matcher = patternForDiscount.matcher(document.getElementsByClass("cashback-price").text());
-        if (matcher.find()){
+        if (matcher.find()) {
             return Double.parseDouble(matcher.group());
         }
         return Double.NaN;
     }
 
-    private String getLabel(Document document){
+    private String getLabel(Document document) {
         Matcher matcher = patternForLabel.matcher(document.getElementsByClass("cashback-price").text());
-        if (matcher.find()){
+        if (matcher.find()) {
             return matcher.group();
         }
         return null;

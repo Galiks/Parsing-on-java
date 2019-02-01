@@ -32,8 +32,10 @@ public class ParsingApplication {
 //            System.out.println(shop);
 //        }
 
-        CashbackoffParser cashbackoffParser = new CashbackoffParser();
-        cashbackoffParser.parsing();
+//        CashbackoffParser cashbackoffParser = new CashbackoffParser();
+//        for (Shop shop : cashbackoffParser.parsing()) {
+//            System.out.println(shop);
+//        }
     }
 }
 

@@ -3,16 +3,27 @@ package com.turchenkov.parsing.parsingmethods;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.turchenkov.parsing.domains.shop.Cashbackoff;
 import com.turchenkov.parsing.domains.shop.Shop;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.persistence.Tuple;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CashbackoffParser implements ParserInterface {
+
+    private final String addressOfSite = "https://cashbackoff.ru";
+
+    private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
+    private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+
     @Override
     public List<Shop> parsing() {
         Document document = null;
@@ -22,16 +33,80 @@ public class CashbackoffParser implements ParserInterface {
             e.printStackTrace();
         }
 
-        if (document != null) {
-            Elements text = document.getElementsByClass("stores-list-item-title");
+        List<Shop> result = new ArrayList<>();
 
-            for (Element element : text) {
-                System.out.println(element.text());
-            }
+        Elements elements = document.getElementsByClass("stores-list-item");
+
+        for (Element element : elements) {
+            result.add(parseElements(element));
         }
 
+        return result;
+    }
+
+    private Shop parseElements(Element element) {
+
+        String name = getName(element);
+        Double discount = getDiscount(getFullDiscount(element));
+        String label = getLabel(getFullDiscount(element));
+        String shopPage = getShopPage(element);
+        String image = getImage(element);
+        if (name != null & image != null & discount != Double.NaN & label != null & shopPage != null) {
+            return new Cashbackoff(name, discount, label, shopPage, image);
+        }
+
+        return null;
+    }
+
+    private Double getDiscount(String fullDiscount) {
+        Matcher matcher = patternForDiscount.matcher(fullDiscount);
+        if (matcher.find()) {
+            return Double.parseDouble(matcher.group());
+        }
+        return Double.NaN;
+    }
+
+    private String getLabel(String fullDiscount) {
+        Matcher matcher = patternForLabel.matcher(fullDiscount);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+
+        return null;
+    }
+
+    private String getImage(Element element) {
+        String image = element.getElementsByTag("img").attr("src");
+        if (image != null) {
+            return addressOfSite + image;
+        }
+
+        return null;
+    }
+
+    private String getShopPage(Element element) {
+
+        String shopPage = element.getElementsByClass("shoplink").attr("href");
+
+        return addressOfSite + shopPage;
+    }
 
 
+    private String getFullDiscount(Element element) {
+
+        String fullDiscount = element.getElementsByTag("span").text();
+        if (fullDiscount != null) {
+            return fullDiscount;
+        }
+        return null;
+    }
+
+    private String getName(Element element) {
+
+        String name = element.getElementsByClass("stores-list-item-title").text();
+        if (name != null) {
+            return name;
+        }
         return null;
     }
 }

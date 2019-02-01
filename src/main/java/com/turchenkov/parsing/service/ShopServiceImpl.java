@@ -1,6 +1,5 @@
 package com.turchenkov.parsing.service;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.domains.shop.Shop;
 import com.turchenkov.parsing.parsingmethods.ParserInterface;
 import com.turchenkov.parsing.repository.ShopRepository;
@@ -22,11 +21,14 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void parsingAndSaveInDB() {
         for (ParserInterface parser : parsers) {
-            //                shopRepository.saveAll(parser.parsing());
-            for (Shop shop : parser.parsing()) {
-              if (shop != null){
-                  shopRepository.save(shop);
-              }
+            try {
+                for (Shop shop : parser.parsing()) {
+                  if (shop != null){
+                      shopRepository.save(shop);
+                  }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

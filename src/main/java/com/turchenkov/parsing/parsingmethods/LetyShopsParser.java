@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class LetyShopsParser /*implements ParserInterface*/ {
+public class LetyShopsParser implements ParserInterface {
 
     @Value("${parsing.site.letyshops}")
     private String addressOfSite;
@@ -48,7 +48,7 @@ public class LetyShopsParser /*implements ParserInterface*/ {
     }
 
     @Timer
-//    @Override
+    @Override
     public List<Shop> parsing() {
         log.info("Начался парсинг");
         int maxPage = getMaxPage();

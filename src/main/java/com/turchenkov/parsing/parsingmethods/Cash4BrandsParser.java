@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class Cash4BrandsParser /*implements ParserInterface*/ {
+public class Cash4BrandsParser implements ParserInterface {
 
     private final int startingShops = 8;
     private final int shopsOnPage = 12;
@@ -46,19 +46,17 @@ public class Cash4BrandsParser /*implements ParserInterface*/ {
         this.pattern = Pattern.compile(patternForPage);
     }
 
-//    @Override
+    @Override
     @Timer
     public List<Shop> parsing() throws IOException {
 
 
         List<Future<Shop>> futures = new LinkedList<>();
         List<Shop> result = new ArrayList<>();
-        final List<String> shopPages = new ArrayList<>(getShopPages());
 
-        for (int i = 0; i < shopPages.size(); i++) {
+        for (String shopPage : getShopPages()) {
 
-            final int finalI = i;
-            futures.add(pool.submit(() -> parseElements(shopPages.get(finalI))));
+            futures.add(pool.submit(() -> parseElements(shopPage)));
         }
         for (Future<Shop> future : futures) {
             try {
