@@ -4,8 +4,13 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.domains.shop.Shop;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.openqa.selenium.json.Json;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -13,11 +18,19 @@ public class KopikotParser implements ParserInterface {
 
     public int page = 0;
 
+    /**
+     * Name: title":"(.*?)"
+     * Image: url":"(.*?)"
+     * Discount: "amount":(.*?),
+     * Label: "unit":"(.*?)"
+     * Page: https:\\\/\\\/www\.kopikot\.ru\\\/stores\\\/(.*?)\)
+     */
+
     @Override
     public List<Shop> parsing() {
 
         HttpResponse<String> response = null;
-        for (int i = 0; i <= 1300; i+=100) {
+        for (int i = 0; i <= 0; i+=100) {
 
             String url = "https://d289b99uqa0t82.cloudfront.net/sites/5/campaigns_limit_100_offset_" + i + "_order_popularity.json";
             System.out.println(url);
@@ -34,7 +47,7 @@ public class KopikotParser implements ParserInterface {
 
             page++;
 
-//            System.out.println(response.getBody());
+            System.out.println(response.getBody());
         }
         return null;
     }
