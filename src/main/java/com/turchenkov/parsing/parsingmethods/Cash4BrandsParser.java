@@ -159,8 +159,6 @@ public class Cash4BrandsParser implements ParserInterface {
                 e.printStackTrace();
             }
 
-//            System.out.println(response.getBody());
-
             Matcher matcher = pattern.matcher(response.getBody());
             while (matcher.find()) {
                 if (matcher.group().contains("u0441")) {

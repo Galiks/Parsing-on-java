@@ -38,10 +38,11 @@ public class ParsingApplication {
 
         Long start = System.currentTimeMillis();
         KopikotParser kopikotParser = new KopikotParser();
-        kopikotParser.parsing();
+        for (Shop shop : kopikotParser.parsing()) {
+            System.out.println(shop);
+        }
         Long end = System.currentTimeMillis();
         System.out.println("TIME : " + (end-start)/1000 );
-        System.out.println(kopikotParser.page);
     }
 }
 
