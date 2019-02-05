@@ -5,6 +5,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.Kopikot;
 import com.turchenkov.parsing.domains.shop.Shop;
 import org.jsoup.Connection;
@@ -33,6 +34,7 @@ public class KopikotParser implements ParserInterface {
         pool = Executors.newFixedThreadPool(THREADS);
     }
 
+    @Timer
     @Override
     public List<Shop> parsing() {
 
@@ -67,11 +69,12 @@ public class KopikotParser implements ParserInterface {
             }
         }
 
-        pool.shutdown();
-
-        System.out.println(result.size());
-
         return result;
+    }
+
+    @PreDestroy
+    private void destroy(){
+        pool.shutdown();
     }
 
     private List<Shop> parseElements(String response) {
@@ -83,7 +86,7 @@ public class KopikotParser implements ParserInterface {
             String image = getImage(item);
             Double discount = getDiscount(item);
             String label = getLabel(item);
-            if (name != null & image != null & discount != Double.NaN & label != null & shopPage != null) {
+            if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null & shopPage != null) {
                 elements.add(new Kopikot(name, discount, label, shopPage, image));
             }
         }

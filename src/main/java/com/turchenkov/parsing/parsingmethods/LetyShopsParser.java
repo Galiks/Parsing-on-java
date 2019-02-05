@@ -87,13 +87,15 @@ public class LetyShopsParser implements ParserInterface {
 
         List<Shop> pageResult = new LinkedList<>();
         for (Element item : items) {
-            String title = getName(item);
+            String name = getName(item);
             String pagesOnTheSite = getPagesOnTheSite(item);
             Double discount = getDiscount(item);
             String label = getLabel(item);
-            String img = getImage(item);
-            LetyShops letyShops = new LetyShops(title, discount, label, pagesOnTheSite, img);
-            pageResult.add(letyShops);
+            String image = getImage(item);
+            if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null) {
+                LetyShops letyShops = new LetyShops(name, discount, label, pagesOnTheSite, image);
+                pageResult.add(letyShops);
+            }
         }
         return pageResult;
     }

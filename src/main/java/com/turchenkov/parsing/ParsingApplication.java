@@ -1,10 +1,7 @@
 package com.turchenkov.parsing;
 
 
-import com.turchenkov.parsing.domains.shop.Cash4Brands;
-import com.turchenkov.parsing.domains.shop.Kopikot;
-import com.turchenkov.parsing.domains.shop.Shop;
-import com.turchenkov.parsing.parsingmethods.*;
+import com.turchenkov.parsing.parsingmethods.LetyShopsParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -17,38 +14,17 @@ public class ParsingApplication {
 
     private static final Logger log = LoggerFactory.getLogger(LetyShopsParser.class);
 
-//https://megabonus.com/shop/compulockscom\/
-//    1722
-
     public static void main(String[] args) throws Exception {
-//        log.info("Приложение стартовало");
-//        SpringApplication.run(ParsingApplication.class, args);
-
-
-//        MegaBonusParser megaBonusParser = new MegaBonusParser();
-//        for (Shop shop : megaBonusParser.parsing()) {
-//            System.out.println(shop);
-//        }
-
-//        CashbackoffParser cashbackoffParser = new CashbackoffParser();
-//        for (Shop shop : cashbackoffParser.parsing()) {
-//            System.out.println(shop);
-//        }
-//        Long end = System.currentTimeMillis();
-
-        Long start = System.currentTimeMillis();
-        KopikotParser kopikotParser = new KopikotParser();
-        for (Shop shop : kopikotParser.parsing()) {
-            System.out.println(shop);
-        }
-        Long end = System.currentTimeMillis();
-        System.out.println("TIME : " + (end-start)/1000 );
+        log.info("Приложение стартовало");
+        SpringApplication.run(ParsingApplication.class, args);
     }
 }
 
 /**
-        * этот кусок кода отвечает за клик. Просто оставлю пока что здесь, чтобы не искать снова
-        */
+ * этот кусок кода отвечает за клик. Просто оставлю пока что здесь, чтобы не искать снова
+ * <p>
+ * прикольный метод для поиска дублей
+ */
 //        for (int i = 0; i < 2; i++) {
 //            try {
 //                driver.findElement(By.className("see-more")).click();

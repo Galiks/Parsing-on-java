@@ -137,7 +137,7 @@ public class EPNParser implements ParserInterface{
         Double discount = getDiscount(fullURL);
         String image = getImage(fullURL);
         String label = getLabel(fullURL);
-        if (image != null & !Double.isNaN(discount)) {
+        if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null) {
             epnList.add(new EPN(name, discount, label, fullURL, image));
         }
     }

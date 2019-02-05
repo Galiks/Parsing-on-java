@@ -3,6 +3,7 @@ package com.turchenkov.parsing.parsingmethods;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.Cashbackoff;
 import com.turchenkov.parsing.domains.shop.Shop;
 import org.jsoup.Jsoup;
@@ -36,6 +37,7 @@ public class CashbackoffParser implements ParserInterface {
         this.pool = Executors.newFixedThreadPool(THREADS);
     }
 
+    @Timer
     @Override
     public List<Shop> parsing() {
         Document document = null;

@@ -97,7 +97,7 @@ public class Cash4BrandsParser implements ParserInterface {
         String image = getImage(document);
         Double discount = getDiscount(document);
         String label = getLabel(document);
-        if (name != null & image != null & discount != Double.NaN & label != null) {
+        if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null) {
             return new Cash4Brands(name, discount, label, pageOfShop, image);
         }
         return null;
