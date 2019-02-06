@@ -1,5 +1,6 @@
 package com.turchenkov.parsing.parsingmethods;
 
+import com.jayway.jsonpath.JsonPath;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -9,6 +10,8 @@ import com.turchenkov.parsing.domains.shop.Shop;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
@@ -27,22 +30,16 @@ public class Cash4BrandsParser implements ParserInterface {
     private final int startingShops = 8;
     private final int shopsOnPage = 12;
     private final String addressOfSite = "https://cash4brands.ru";
-    private final String pageForParsing = "https://cash4brands.ru/cashback";
-    private final String patternForMaxShops = "\\d+";
     private final ExecutorService pool;
     Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
     Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent|р|Р");
-    private Pattern patternForMaxShopsImpl;
-    private String patternForPage = "\\/cashback\\/[^\\/]+";
-    private Pattern pattern;
+    private Pattern patternForMaxShops = Pattern.compile("\\d+");
     //    @Value("${parsing.useragent}")
     private String userAgent = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
 
     public Cash4BrandsParser() {
         int THREADS = 4;
         this.pool = Executors.newFixedThreadPool(THREADS);
-        this.patternForMaxShopsImpl = Pattern.compile(patternForMaxShops);
-        this.pattern = Pattern.compile(patternForPage);
     }
 
     @Override
@@ -50,26 +47,62 @@ public class Cash4BrandsParser implements ParserInterface {
     public List<Shop> parsing() {
 
 
-        List<Future<Shop>> futures = new LinkedList<>();
+        List<Future<List<Object>>> futures = new LinkedList<>();
         List<Shop> result = new ArrayList<>();
+        List<List<Object>> html = new ArrayList<>();
 
         try {
-            for (String shopPage : getShopPages()) {
-
-                futures.add(pool.submit(() -> parseElements(shopPage)));
+            for (String s : getShopsJson()) {
+                futures.add(pool.submit(() -> JsonPath.read(s, "$..shops[*]")));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (Future<Shop> future : futures) {
+
+        for (Future<List<Object>> future : futures) {
             try {
-                result.add(future.get());
+                html.add(future.get());
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
 
+        for (List<Object> list : html) {
+            for (Object object : list) {
+                result.add(parseElements(object));
+            }
+        }
+
         return result;
+    }
+
+    private Shop parseElements(Object o) {
+        Element element = Jsoup.parse(o.toString()).getElementsByClass("__item_wrap").first();
+        String page = getPage(element);
+        String image = getImage(element);
+        String name = getName(element);
+        String fullDiscount = element.getElementsByClass("ufp_bonus").text();
+        if (fullDiscount == null){
+            return null;
+        }
+        String label = getLabel(fullDiscount);
+        Double discount = getDiscount(fullDiscount);
+        if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null & page != null) {
+            return new Cash4Brands(name, discount, label, page, image);
+        }
+        return null;
+    }
+
+    private String getName(Element element) {
+        return element.getElementsByTag("h3").text();
+    }
+
+    private String getImage(Element element) {
+        return addressOfSite + element.getElementsByClass("--logo").first().getElementsByTag("img").attr("src");
+    }
+
+    private String getPage(Element element) {
+        return addressOfSite + element.attr("href");
     }
 
     @PreDestroy
@@ -77,73 +110,30 @@ public class Cash4BrandsParser implements ParserInterface {
         pool.shutdown();
     }
 
-    private Shop parseElements(String shop) throws IOException {
-
-        try {
-            return getShops(shop);
-        } catch (HttpStatusException http) {
-            http.printStackTrace();
-            System.out.println(http.getStatusCode());
-            System.out.println(http.getUrl());
-            parseElements(shop);
-        }
-        return null;
-    }
-
-    private Shop getShops(String pageOfShop) throws IOException {
-        Document document;
-        document = Jsoup.connect(pageOfShop).userAgent(userAgent).get();
-        String name = getName(document);
-        String image = getImage(document);
-        Double discount = getDiscount(document);
-        String label = getLabel(document);
-        if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null) {
-            return new Cash4Brands(name, discount, label, pageOfShop, image);
-        }
-        return null;
-    }
-
-    private String getLabel(Document document) {
-        String discountAndLabel = document.getElementsByClass("color-yellow").text();
-
-        Matcher labelMatcher = patternForLabel.matcher(discountAndLabel);
+    private String getLabel(String fullDiscount){
+        Matcher labelMatcher = patternForLabel.matcher(fullDiscount);
         if (labelMatcher.find()) {
             return labelMatcher.group();
         }
-
         return null;
     }
 
-    private Double getDiscount(Document document) {
-        String discountAndLabel = document.getElementsByClass("color-yellow").text();
-
-        Matcher discountMatcher = patternForDiscount.matcher(discountAndLabel);
-        if (discountMatcher.find()) {
-            return Double.parseDouble(discountMatcher.group());
+    private Double getDiscount(String fullDiscount) {
+        Matcher discountMatcher = patternForDiscount.matcher(fullDiscount);
+        String discount = "";
+        while (discountMatcher.find()){
+            discount = discountMatcher.group();
+        }
+        try {
+            return Double.valueOf(discount);
+        }catch (NumberFormatException e){
+            e.printStackTrace();
         }
 
         return Double.NaN;
     }
 
-    private String getImage(Document document) {
-        String result = document.getElementsByClass("logo_shop").first().getElementsByTag("img").attr("src");
-        if (result != null) {
-            return addressOfSite + result;
-        } else {
-            return null;
-        }
-    }
-
-    private String getName(Document document) {
-        String name = document.getElementsByClass("last").first().text();
-        if (name != null) {
-            return name;
-        } else {
-            return null;
-        }
-    }
-
-    private Set<String> getShopPages() throws IOException {
+    private Set<String> getShopsJson() throws IOException {
         Set<String> result = new HashSet<>();
         int maxPage = (getMaxShops() + startingShops) / shopsOnPage;
         for (int i = 1; i <= maxPage; i++) {
@@ -155,28 +145,18 @@ public class Cash4BrandsParser implements ParserInterface {
                         .header("Postman-Token", "9774dfc4-97d7-433f-93b1-e37c4a6e1fe3")
                         .body("namerequest=show_page&undefined=")
                         .asString();
+                result.add(response.getBody());
             } catch (UnirestException e) {
                 e.printStackTrace();
             }
-
-            Matcher matcher = pattern.matcher(response.getBody());
-            while (matcher.find()) {
-                if (matcher.group().contains("u0441")) {
-                    System.out.println("FIND!");
-                    result.add("https://cash4brands.ru/cashback/%D1%81redilo-ua/");
-                    continue;
-                }
-                result.add(addressOfSite + matcher.group());
-            }
         }
-
         return result;
     }
 
     private int getMaxShops() throws IOException {
         Document document = Jsoup.connect(addressOfSite).userAgent(userAgent).get();
         String pages = document.getElementsByClass("button -transparent -border btn-large").text();
-        Matcher matcher = patternForMaxShopsImpl.matcher(pages);
+        Matcher matcher = patternForMaxShops.matcher(pages);
         if (matcher.find()) {
             return Integer.parseInt(matcher.group());
         }
