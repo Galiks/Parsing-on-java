@@ -10,6 +10,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Tuple;
@@ -40,23 +42,17 @@ public class CashbackoffParser implements ParserInterface {
     @Timer
     @Override
     public List<Shop> parsing() {
-        Document document = null;
-        try {
-            document = Jsoup.connect("https://cashbackoff.ru/index_shops_search.php").get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        System.setProperty("webdriver.chrome.driver", "E:/Download/chromedriver_win32/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.navigate().to("https://cashbackoff.ru/index_shops_search.php");
+        Document document = Jsoup.parse(driver.getPageSource());
+        driver.close();
         List<Shop> result = new ArrayList<>();
-
         List<Future<Shop>> futureList = new ArrayList<>();
         Elements elements = document.getElementsByClass("stores-list-item");
-
-
         for (Element element : elements) {
             futureList.add(pool.submit(() -> parseElements(element)));
         }
-
         for (Future<Shop> shopFuture : futureList) {
             try {
                 result.add(shopFuture.get());
@@ -64,7 +60,6 @@ public class CashbackoffParser implements ParserInterface {
                 e.printStackTrace();
             }
         }
-
         return result;
     }
 
