@@ -66,26 +66,30 @@ public class HtmlUnitComparing {
     }
 
     private List<Shop> parseElements(int i) throws IOException {
-        webClient = new WebClient();
-        webClient.getOptions().setThrowExceptionOnScriptError(false);
-        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-        System.out.println("Номер страницы: " + i);
-        List<Shop> result = new ArrayList<>();
-        HtmlPage page = webClient.getPage("https://letyshops.com/shops?page=" + i);
-        DomNodeList<DomNode> domNodes = page.querySelectorAll("a.b-teaser__inner");
-        for (DomNode domNode : domNodes) {
-            String name = getName(domNode);
-            String image = getImage(domNode);
-            Double discount = getDiscount(domNode);
-            String label = getLabel(domNode);
-            String url = getUrl(domNode);
-            if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null) {
-                LetyShops letyShops = new LetyShops(name, discount, label, url, image);
-                result.add(letyShops);
+        try {
+            webClient = new WebClient();
+            webClient.getOptions().setThrowExceptionOnScriptError(false);
+            webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+            System.out.println("Номер страницы: " + i);
+            List<Shop> result = new ArrayList<>();
+            HtmlPage page = webClient.getPage("https://letyshops.com/shops?page=" + i);
+            DomNodeList<DomNode> domNodes = page.querySelectorAll("a.b-teaser__inner");
+            for (DomNode domNode : domNodes) {
+                String name = getName(domNode);
+                String image = getImage(domNode);
+                Double discount = getDiscount(domNode);
+                String label = getLabel(domNode);
+                String url = getUrl(domNode);
+                if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null) {
+                    LetyShops letyShops = new LetyShops(name, discount, label, url, image);
+                    result.add(letyShops);
+                }
             }
+            System.out.println(result.size());
+            return result;
+        } finally {
+            webClient.closeAllWindows();
         }
-        System.out.println(result.size());
-        return result;
     }
 
     private String getUrl(DomNode domNode) {
