@@ -1,6 +1,8 @@
 package com.turchenkov.parsing;
 
 
+import com.turchenkov.parsing.comparing.HtmlUnitComparing;
+import com.turchenkov.parsing.comparing.MegaBonusParserWithCookie;
 import com.turchenkov.parsing.domains.shop.Shop;
 import com.turchenkov.parsing.parsingmethods.Cash4BrandsParser;
 import com.turchenkov.parsing.parsingmethods.CashbackoffParser;
@@ -11,18 +13,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.io.IOException;
+
 @ComponentScan
 @SpringBootApplication
 public class ParsingApplication {
 
     private static final Logger log = LoggerFactory.getLogger(LetyShopsParser.class);
 
-    public static void main(String[] args) {
-//        log.info("Приложение стартовало");
-//        SpringApplication.run(ParsingApplication.class, args);
+    public static void main(String[] args) throws IOException {
+        log.info("Приложение стартовало");
+        SpringApplication.run(ParsingApplication.class, args);
 
-        CashbackoffParser cashbackoffParser = new CashbackoffParser();
-        cashbackoffParser.parsing();
+//        HtmlUnitComparing htmlUnitComparing = new HtmlUnitComparing();
+//        htmlUnitComparing.main();
+
+//        MegaBonusParserWithCookie megaBonusParserWithCookie = new MegaBonusParserWithCookie();
+//        megaBonusParserWithCookie.parsing();
     }
 }
 
