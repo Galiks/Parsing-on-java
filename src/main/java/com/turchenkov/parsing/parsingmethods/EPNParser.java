@@ -3,6 +3,8 @@ package com.turchenkov.parsing.parsingmethods;
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.EPN;
 import com.turchenkov.parsing.domains.shop.Shop;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -26,56 +27,46 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class EPNParser implements ParserInterface{
+public class EPNParser implements ParserInterface {
 
-    //избавить от констант, перенеся их в application.properties
-
-    @Value("${parsing.site.epn}")
-    private String addressOfSite;
-
-    @Value("${parsing.useragent}")
-    private String userAgent;
-
-    @Value("${parsing.site.epn.checkword}")
-    private String checkWord;
-
-    @Value("${parsing.site.epn.startURL}")
-    private String startURL;
-
-    @Value("${parsing.site.epn.parsingURL}")
-    private String parsingURL;
+    private static final Logger log = Logger.getLogger(EPNParser.class);
 
     private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
     private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
-    private final int THREADS = 4;
     private final ExecutorService pool;
+    @Value("${parsing.site.epn}")
+    private String addressOfSite;
+    @Value("${parsing.useragent}")
+    private String userAgent;
+    @Value("${parsing.site.epn.checkword}")
+    private String checkWord;
+    @Value("${parsing.site.epn.startURL}")
+    private String startURL;
+    @Value("${parsing.site.epn.parsingURL}")
+    private String parsingURL;
 
     public EPNParser() {
+        int THREADS = Runtime.getRuntime().availableProcessors();
         this.pool = Executors.newFixedThreadPool(THREADS);
     }
 
     @Timer
     @Override
     public List<Shop> parsing() {
+        BasicConfigurator.configure();
         int maxPage = getMaxPage();
-
         List<Future<List<Shop>>> futures = new LinkedList<>();
         List<Shop> result;
-        try {
-            for (int i = 1; i <= maxPage; i++) {
-                final int finalI = i;
-                futures.add(pool.submit(()->parsElements(finalI)));
-            }
-            result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
-        } finally {
-
+        for (int i = 1; i <= maxPage; i++) {
+            final int finalI = i;
+            futures.add(pool.submit(() -> parsElements(finalI)));
         }
-
+        result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
         return result;
     }
 
     @PreDestroy
-    private void destroy(){
+    private void destroy() {
         pool.shutdown();
     }
 
@@ -84,7 +75,7 @@ public class EPNParser implements ParserInterface{
             try {
                 return it.get().stream();
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                log.error(e);
                 return Stream.empty();
             }
         };
@@ -95,7 +86,7 @@ public class EPNParser implements ParserInterface{
             Elements elements = Jsoup.connect(startURL).userAgent(userAgent).post().select("li.new-pagination__item").select("a[href]");
             return Integer.parseInt(elements.get(elements.size() - 2).text());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
 
         //почему один? потому что одна страница точно есть
@@ -103,20 +94,15 @@ public class EPNParser implements ParserInterface{
     }
 
     private List<Shop> parsElements(int i) throws IOException {
-
         Document document = Jsoup.connect(parsingURL + i)
                 .userAgent(userAgent)
                 .post();
-
         Elements elements = document.select("div.shop-list__item");
-
         List<Shop> epnList = new LinkedList<>();
-
         for (Element element : elements) {
             if (element.text().contains(checkWord)) {
                 //избавиться от магического числа 22 - количество символов, после которых начинается дисконт, если есть слово "Новый"
                 if (element.text().length() > 22) {
-
                     getElements(epnList, element);
                 }
             } else {
@@ -126,7 +112,6 @@ public class EPNParser implements ParserInterface{
                 }
             }
         }
-
         return epnList;
     }
 
@@ -146,13 +131,12 @@ public class EPNParser implements ParserInterface{
         try {
             String element = Jsoup.connect(url).userAgent(userAgent).post().select("header.offer-aside__header").select("span.offer-aside__info-percent").first().text();
             Matcher labelMatcher = patternForLabel.matcher(element);
-            if (labelMatcher.find()){
+            if (labelMatcher.find()) {
                 return element.substring(labelMatcher.start(), labelMatcher.end());
             }
-
             return "";
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
 
         return "";
@@ -162,9 +146,8 @@ public class EPNParser implements ParserInterface{
         try {
             return Jsoup.connect(url).userAgent(userAgent).post().select("div.offer-aside__logo-wrapper").select("img[src]").attr("src");
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
-
         return "";
     }
 
@@ -172,12 +155,12 @@ public class EPNParser implements ParserInterface{
         try {
             String element = Jsoup.connect(url).userAgent(userAgent).post().select("header.offer-aside__header").select("span.offer-aside__info-percent").first().text();
             Matcher discountMatcher = patternForDiscount.matcher(element);
-            if (discountMatcher.find()){
+            if (discountMatcher.find()) {
                 return Double.parseDouble(element.substring(discountMatcher.start(), discountMatcher.end()));
             }
             return Double.NaN;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
 
         return Double.NaN;
@@ -187,5 +170,4 @@ public class EPNParser implements ParserInterface{
     private String getName(String url) {
         return url.toUpperCase().charAt(33) + url.substring(34, url.length() - 1);
     }
-
 }

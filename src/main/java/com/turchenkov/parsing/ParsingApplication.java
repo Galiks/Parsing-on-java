@@ -1,28 +1,20 @@
 package com.turchenkov.parsing;
 
 
-import com.turchenkov.parsing.comparing.HtmlUnitComparing;
-import com.turchenkov.parsing.comparing.MegaBonusParserWithCookie;
-import com.turchenkov.parsing.domains.shop.Shop;
-import com.turchenkov.parsing.parsingmethods.Cash4BrandsParser;
-import com.turchenkov.parsing.parsingmethods.CashbackoffParser;
-import com.turchenkov.parsing.parsingmethods.LetyShopsParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-
-import java.io.IOException;
 
 @ComponentScan
 @SpringBootApplication
 public class ParsingApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(LetyShopsParser.class);
+    private static final Logger log = Logger.getLogger(ParsingApplication.class);
 
-    public static void main(String[] args) throws IOException {
-        log.info("Приложение стартовало");
+    public static void main(String[] args) {
+        BasicConfigurator.configure();
         SpringApplication.run(ParsingApplication.class, args);
 
 //        HtmlUnitComparing htmlUnitComparing = new HtmlUnitComparing();
@@ -32,20 +24,6 @@ public class ParsingApplication {
 //        megaBonusParserWithCookie.parsing();
     }
 }
-
-/**
- * этот кусок кода отвечает за клик. Просто оставлю пока что здесь, чтобы не искать снова
- * <p>
- * прикольный метод для поиска дублей
- */
-//        for (int i = 0; i < 2; i++) {
-//            try {
-//                driver.findElement(By.className("see-more")).click();
-//            } catch (org.openqa.selenium.ElementNotVisibleException e) {
-//                e.printStackTrace();
-//                break;
-//            }
-//        }
 
 /**
  * прикольный метод для поиска дублей

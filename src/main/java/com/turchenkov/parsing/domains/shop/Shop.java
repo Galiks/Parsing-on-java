@@ -42,13 +42,12 @@ public abstract class Shop {
 
     @Override
     public String toString() {
-        return "Shop{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", discount=" + discount +
-                ", label='" + label + '\'' +
-                ", pageOnTheSite='" + pageOnTheSite + '\'' +
-                ", image='" + image + '\'' +
-                '}';
+        return "Shop " +
+                "id =" + id + '\n' +
+                "name =" + name + '\n' +
+                "discount =" + discount + '\n' +
+                "label =" + label + '\n' +
+                "pageOnTheSite='" + pageOnTheSite + '\n' +
+                "image='" + image + '\n';
     }
 }

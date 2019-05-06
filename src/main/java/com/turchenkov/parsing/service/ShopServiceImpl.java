@@ -20,7 +20,8 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void parsingAndSaveInDB() {
-        for (ParserInterface parser : parsers) {
+        List<ParserInterface> parsers = this.parsers;
+        for (ParserInterface parser : this.parsers) {
             for (Shop shop : parser.parsing()) {
               if (shop != null){
                   shopRepository.save(shop);

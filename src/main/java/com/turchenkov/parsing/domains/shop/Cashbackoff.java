@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 @Data
 @NoArgsConstructor
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public final class Cashbackoff extends Shop {
 
     public Cashbackoff(String name, double discount, String label, String pageOnTheSite, String image) {

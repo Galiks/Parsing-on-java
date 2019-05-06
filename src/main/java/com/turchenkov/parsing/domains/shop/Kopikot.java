@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public final class Kopikot extends Shop {

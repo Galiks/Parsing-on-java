@@ -6,6 +6,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.Cashbackoff;
 import com.turchenkov.parsing.domains.shop.Shop;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,6 +30,8 @@ import java.util.regex.Pattern;
 @Component
 public class CashbackoffParser implements ParserInterface {
 
+    private static final Logger log = Logger.getLogger(CashbackoffParser.class);
+
     private final String addressOfSite = "https://cashbackoff.ru";
 
     private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
@@ -35,13 +39,14 @@ public class CashbackoffParser implements ParserInterface {
     private ExecutorService pool;
 
     public CashbackoffParser() {
-        int THREADS = 4;
+        int THREADS = Runtime.getRuntime().availableProcessors();
         this.pool = Executors.newFixedThreadPool(THREADS);
     }
 
     @Timer
     @Override
     public List<Shop> parsing() {
+        BasicConfigurator.configure();
         System.setProperty("webdriver.chrome.driver", "E:/Download/chromedriver_win32/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.navigate().to("https://cashbackoff.ru/index_shops_search.php");
@@ -57,14 +62,13 @@ public class CashbackoffParser implements ParserInterface {
             try {
                 result.add(shopFuture.get());
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
         return result;
     }
 
     private Shop parseElements(Element element) {
-
         String name = getName(element);
         Double discount = getDiscount(getFullDiscount(element));
         String label = getLabel(getFullDiscount(element));
@@ -73,7 +77,6 @@ public class CashbackoffParser implements ParserInterface {
         if (name != null & image != null & discount != Double.NaN & label != null & shopPage != null) {
             return new Cashbackoff(name, discount, label, shopPage, image);
         }
-
         return null;
     }
 
@@ -90,7 +93,6 @@ public class CashbackoffParser implements ParserInterface {
         if (matcher.find()) {
             return matcher.group();
         }
-
         return null;
     }
 
@@ -99,20 +101,16 @@ public class CashbackoffParser implements ParserInterface {
         if (image != null) {
             return addressOfSite + image;
         }
-
         return null;
     }
 
     private String getShopPage(Element element) {
-
         String shopPage = element.getElementsByClass("shoplink").attr("href");
-
         return addressOfSite + shopPage;
     }
 
 
     private String getFullDiscount(Element element) {
-
         String fullDiscount = element.getElementsByTag("span").text();
         if (fullDiscount != null) {
             return fullDiscount;
@@ -121,7 +119,6 @@ public class CashbackoffParser implements ParserInterface {
     }
 
     private String getName(Element element) {
-
         String name = element.getElementsByClass("stores-list-item-title").text();
         if (name != null) {
             return name;

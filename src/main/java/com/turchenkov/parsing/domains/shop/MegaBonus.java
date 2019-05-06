@@ -11,10 +11,9 @@ import javax.persistence.Entity;
 @Data
 @ToString(callSuper = true)
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public final class MegaBonus extends Shop {
     public MegaBonus(String name, double discount, String label, String pageOnTheSite, String image) {
         super(name, discount, label, pageOnTheSite, image);
     }
-
 }

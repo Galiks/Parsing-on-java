@@ -1,5 +1,6 @@
 package com.turchenkov.parsing.parsingmethods;
 
+
 import com.jayway.jsonpath.JsonPath;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -7,6 +8,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.Cash4Brands;
 import com.turchenkov.parsing.domains.shop.Shop;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,6 +28,8 @@ import java.util.regex.Pattern;
 @Component
 public class Cash4BrandsParser implements ParserInterface {
 
+    private static final Logger log = Logger.getLogger(Cash4BrandsParser.class);
+
     private final int startingShops = 8;
     private final int shopsOnPage = 12;
     private final String addressOfSite = "https://cash4brands.ru";
@@ -36,41 +41,36 @@ public class Cash4BrandsParser implements ParserInterface {
     private String userAgent = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36";
 
     public Cash4BrandsParser() {
-        int THREADS = 4;
+        int THREADS = Runtime.getRuntime().availableProcessors();
         this.pool = Executors.newFixedThreadPool(THREADS);
     }
 
     @Override
     @Timer
     public List<Shop> parsing() {
-
-
+        BasicConfigurator.configure();
         List<Future<List<Object>>> futures = new LinkedList<>();
         List<Shop> result = new ArrayList<>();
         List<List<Object>> html = new ArrayList<>();
-
         try {
             for (String s : getShopsJson()) {
                 futures.add(pool.submit(() -> JsonPath.read(s, "$..shops[*]")));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
-
         for (Future<List<Object>> future : futures) {
             try {
                 html.add(future.get());
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
-
         for (List<Object> list : html) {
             for (Object object : list) {
                 result.add(parseElements(object));
             }
         }
-
         return result;
     }
 
@@ -125,7 +125,7 @@ public class Cash4BrandsParser implements ParserInterface {
         try {
             return Double.valueOf(discount);
         }catch (NumberFormatException e){
-            e.printStackTrace();
+           log.error(e);
         }
 
         return Double.NaN;
@@ -145,9 +145,10 @@ public class Cash4BrandsParser implements ParserInterface {
                         .asString();
                 result.add(response.getBody());
             } catch (UnirestException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
+        Unirest.shutdown();
         return result;
     }
 

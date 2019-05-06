@@ -3,13 +3,12 @@ package com.turchenkov.parsing.parsingmethods;
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.LetyShops;
 import com.turchenkov.parsing.domains.shop.Shop;
-
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,20 +26,18 @@ import java.util.stream.Stream;
 @Component
 public class LetyShopsParser implements ParserInterface {
 
-    @Value("${parsing.site.letyshops}")
-    private String addressOfSite;
-
+    private static final Logger log = Logger.getLogger(LetyShopsParser.class);
     private final Pattern patternForDiscount;
     private final Pattern patternForLabel;
     private final ExecutorService pool;
     private final CompletionService<List<Shop>> completionService;
-
-    private static final Logger log = LoggerFactory.getLogger(LetyShopsParser.class);
+    @Value("${parsing.site.letyshops}")
+    private String addressOfSite;
 
 
     public LetyShopsParser() {
 
-        int THREADS = 4;
+        int THREADS = Runtime.getRuntime().availableProcessors();
         this.pool = Executors.newFixedThreadPool(THREADS);
         completionService = new ExecutorCompletionService<>(this.pool);
         patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
@@ -50,9 +47,8 @@ public class LetyShopsParser implements ParserInterface {
     @Timer
     @Override
     public List<Shop> parsing() {
-        log.info("Начался парсинг");
+        BasicConfigurator.configure();
         int maxPage = getMaxPage();
-
         List<Future<List<Shop>>> futures = new LinkedList<>();
         List<Shop> result;
         for (int i = 1; i <= maxPage; i++) {
@@ -60,13 +56,11 @@ public class LetyShopsParser implements ParserInterface {
             futures.add(completionService.submit(() -> parsElements(finalI)));
         }
         result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
-
-        log.info("Парсинг закончился");
         return result;
     }
 
     @PreDestroy
-    private void destroy(){
+    private void destroy() {
         pool.shutdown();
     }
 
@@ -75,7 +69,7 @@ public class LetyShopsParser implements ParserInterface {
             try {
                 return it.get().stream();
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                log.error(e);
                 return Stream.empty();
             }
         };
@@ -84,7 +78,6 @@ public class LetyShopsParser implements ParserInterface {
     private List<Shop> parsElements(int i) throws IOException {
         Document document = Jsoup.connect("https://letyshops.com/shops?page=" + i).get();
         Elements items = document.getElementsByClass("b-teaser__inner");
-
         List<Shop> pageResult = new LinkedList<>();
         for (Element item : items) {
             String name = getName(item);
@@ -137,10 +130,8 @@ public class LetyShopsParser implements ParserInterface {
                     .getElementsByClass("b-pagination__item");
             return Integer.parseInt(elements.get(elements.size() - 2).text());
         } catch (IOException e) {
-            log.error("IOException");
-            e.printStackTrace();
+            log.error(e);
             return 0;
         }
-
     }
 }

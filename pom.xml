@@ -94,12 +94,13 @@
             <version>1.11.3</version>
         </dependency>
 
-        <!--There are dependencies for requests-->
+        <!-- https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java -->
         <dependency>
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
             <version>1.4.9</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
