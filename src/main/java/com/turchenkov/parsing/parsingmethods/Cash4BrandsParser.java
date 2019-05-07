@@ -34,7 +34,7 @@ public class Cash4BrandsParser implements ParserInterface {
     private final int shopsOnPage = 12;
     private final String addressOfSite = "https://cash4brands.ru";
     private final ExecutorService pool;
-    Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    Pattern patternForDiscount = Pattern.compile("\\d+[.|,]*\\d*");
     Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent|р|Р");
     private Pattern patternForMaxShops = Pattern.compile("\\d+");
     //    @Value("${parsing.useragent}")
@@ -123,11 +123,10 @@ public class Cash4BrandsParser implements ParserInterface {
             discount = discountMatcher.group();
         }
         try {
-            return Double.valueOf(discount);
+            return Double.valueOf(discount.replace(',', '.'));
         }catch (NumberFormatException e){
            log.error(e);
         }
-
         return Double.NaN;
     }
 
@@ -148,7 +147,6 @@ public class Cash4BrandsParser implements ParserInterface {
                 log.error(e);
             }
         }
-        Unirest.shutdown();
         return result;
     }
 

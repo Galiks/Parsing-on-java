@@ -35,7 +35,7 @@ public class CashbackoffParser implements ParserInterface {
     private final String addressOfSite = "https://cashbackoff.ru";
 
     private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
-    private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    private final Pattern patternForDiscount = Pattern.compile("\\d+[.|,]*\\d*");
     private ExecutorService pool;
 
     public CashbackoffParser() {
@@ -47,9 +47,8 @@ public class CashbackoffParser implements ParserInterface {
     @Override
     public List<Shop> parsing() {
         BasicConfigurator.configure();
-        System.setProperty("webdriver.chrome.driver", "E:/Download/chromedriver_win32/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
-        driver.navigate().to("https://cashbackoff.ru/index_shops_search.php");
+        driver.get("https://cashbackoff.ru/index_shops_search.php");
         Document document = Jsoup.parse(driver.getPageSource());
         driver.close();
         List<Shop> result = new ArrayList<>();
@@ -70,6 +69,9 @@ public class CashbackoffParser implements ParserInterface {
 
     private Shop parseElements(Element element) {
         String name = getName(element);
+        if (name.equals("М.Видео")){
+            System.out.println("HEY!");
+        }
         Double discount = getDiscount(getFullDiscount(element));
         String label = getLabel(getFullDiscount(element));
         String shopPage = getShopPage(element);
@@ -81,11 +83,17 @@ public class CashbackoffParser implements ParserInterface {
     }
 
     private Double getDiscount(String fullDiscount) {
+        String discount = "";
         Matcher matcher = patternForDiscount.matcher(fullDiscount);
-        if (matcher.find()) {
-            return Double.parseDouble(matcher.group());
+        while (matcher.find()) {
+            discount = matcher.group();
         }
-        return Double.NaN;
+        try {
+            return Double.parseDouble(discount.replace(',', '.'));
+        } catch (NumberFormatException e) {
+            log.error(e);
+            return Double.NaN;
+        }
     }
 
     private String getLabel(String fullDiscount) {

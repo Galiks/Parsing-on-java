@@ -4,6 +4,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.domains.shop.Shop;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -14,4 +15,6 @@ public interface ShopService {
     List<Shop> update() throws UnirestException;
     List<Shop> orderByDiscount();
     List<Shop> orderByDiscountDesc();
+    void saveInExcelFile();
+    void saveInCSVFile() throws IOException;
 }

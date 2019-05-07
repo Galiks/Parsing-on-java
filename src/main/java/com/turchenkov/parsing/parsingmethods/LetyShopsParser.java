@@ -41,7 +41,7 @@ public class LetyShopsParser implements ParserInterface {
         this.pool = Executors.newFixedThreadPool(THREADS);
         completionService = new ExecutorCompletionService<>(this.pool);
         patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
-        patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+        patternForDiscount = Pattern.compile("\\d+[.|,]*\\d*");
     }
 
     @Timer
@@ -116,11 +116,17 @@ public class LetyShopsParser implements ParserInterface {
 
     private Double getDiscount(Element item) {
         String discount = item.getElementsByClass("b-shop-teaser__cash-value-row").first().text();
+        String trueDiscount = "";
         Matcher matcher = patternForDiscount.matcher(discount);
-        if (matcher.find()) {
-            return Double.parseDouble(discount.substring(matcher.start(), matcher.end()));
+        while (matcher.find()) {
+            trueDiscount = matcher.group();
         }
-        return Double.NaN;
+        try {
+            return Double.parseDouble(trueDiscount.replace(',','.'));
+        } catch (NumberFormatException e) {
+            log.error(e);
+            return Double.NaN;
+        }
     }
 
     private int getMaxPage() {

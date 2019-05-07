@@ -44,10 +44,10 @@ public abstract class Shop {
     public String toString() {
         return "Shop " +
                 "id =" + id + '\n' +
-                "name =" + name + '\n' +
-                "discount =" + discount + '\n' +
-                "label =" + label + '\n' +
-                "pageOnTheSite='" + pageOnTheSite + '\n' +
-                "image='" + image + '\n';
+                "name = " + name + '\n' +
+                "discount = " + discount + '\n' +
+                "label = " + label + '\n' +
+                "pageOnTheSite = " + pageOnTheSite + '\n' +
+                "image = " + image + '\n';
     }
 }

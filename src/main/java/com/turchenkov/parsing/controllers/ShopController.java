@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.IOException;
+
 @Controller
 public class ShopController {
 
@@ -26,7 +28,7 @@ public class ShopController {
     }
 
     @PostMapping("/update")
-    public String updateShopsPost() throws UnirestException {
+    public String updateShopsPost() {
         service.update();
         return "redirect:/shops";
     }
@@ -37,20 +39,21 @@ public class ShopController {
         return "shops";
     }
 
-//    @PostMapping("/shops/orderByDiscount")
-//    public String orderByDiscountPost(){
-//        return "redirect:";
-//    }
-
     @GetMapping("/shops/orderByDiscountDesc")
     public String orderByDiscountDescGet(Model model) {
         model.addAttribute("shops", service.orderByDiscountDesc());
         return "shops";
     }
 
-//    @PostMapping("/shops/orderByDiscountDesc")
-//    public String orderByDiscountDescPost(){
-//        return "redirect:";
-//    }
+    @PostMapping("/excel")
+    public String saveShopsInExcelFile(){
+        service.saveInExcelFile();
+        return "redirect:/shops";
+    }
 
+    @PostMapping("/csv")
+    public String saveShopsInCSVFile() throws IOException {
+        service.saveInCSVFile();
+        return "redirect:/shops";
+    }
 }

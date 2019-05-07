@@ -43,15 +43,22 @@ public class KopikotParser implements ParserInterface {
             String url = "https://d289b99uqa0t82.cloudfront.net/sites/5/campaigns_limit_100_offset_" + i + "_order_popularity.json";
             try {
                 response = Unirest.get(url)
-                        .header("Content-Type", "application/x-www-form-urlencoded")
+                        .header("User-Agent", "PostmanRuntime/7.11.0")
+                        .header("Accept", "*/*")
+                        .header("Cache-Control", "no-cache")
+                        .header("Postman-Token", "ac6a192d-72f5-4238-9321-55c1308e9846,09ec761f-7c53-4696-bf5a-dc44918e73c5")
+                        .header("Host", "d289b99uqa0t82.cloudfront.net")
+                        .header("accept-encoding", "gzip, deflate")
+                        .header("Connection", "keep-alive")
                         .header("cache-control", "no-cache")
-                        .header("Postman-Token", "2248ba09-4292-4e65-8fc5-d222e99631ec")
                         .asString();
             } catch (UnirestException e) {
-                log.error(e);
+                log.error(e + " : " + i);
             }
             HttpResponse<String> finalResponse = response;
-            futures.add(pool.submit(() -> parseElements(finalResponse.getBody())));
+            if (finalResponse != null) {
+                futures.add(pool.submit(() -> parseElements(finalResponse.getBody())));
+            }
         }
         for (Future<List<Shop>> future : futures) {
             try {

@@ -31,7 +31,7 @@ public class EPNParser implements ParserInterface {
 
     private static final Logger log = Logger.getLogger(EPNParser.class);
 
-    private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    private final Pattern patternForDiscount = Pattern.compile("\\d+[.|,]*\\d*");
     private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
     private final ExecutorService pool;
     @Value("${parsing.site.epn}")
@@ -154,15 +154,19 @@ public class EPNParser implements ParserInterface {
     private Double getDiscount(String url) {
         try {
             String element = Jsoup.connect(url).userAgent(userAgent).post().select("header.offer-aside__header").select("span.offer-aside__info-percent").first().text();
+            String discount = "";
             Matcher discountMatcher = patternForDiscount.matcher(element);
-            if (discountMatcher.find()) {
-                return Double.parseDouble(element.substring(discountMatcher.start(), discountMatcher.end()));
+            while (discountMatcher.find()) {
+                discount = discountMatcher.group();
             }
-            return Double.NaN;
+            try {
+                return Double.parseDouble(discount.replace(',', '.'));
+            } catch (NumberFormatException e) {
+                log.error(e);
+            }
         } catch (IOException e) {
             log.error(e);
         }
-
         return Double.NaN;
     }
 

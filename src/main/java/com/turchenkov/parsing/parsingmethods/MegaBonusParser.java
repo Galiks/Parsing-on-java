@@ -31,7 +31,7 @@ public class MegaBonusParser implements ParserInterface {
     private static final Logger log = Logger.getLogger(MegaBonusParser.class);
 
     private final Pattern patternForName = Pattern.compile("Подробнее про кэшбэк в ([\\w\\s\\d\\W]+)");
-    private final Pattern patternForDiscount = Pattern.compile("\\d+[.]*\\d*");
+    private final Pattern patternForDiscount = Pattern.compile("\\d+[.|,]*\\d*");
     private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent|р|Р");
     private final ExecutorService pool;
     private final String addressForParsing = "https://megabonus.com/feed";
@@ -48,12 +48,6 @@ public class MegaBonusParser implements ParserInterface {
         BasicConfigurator.configure();
         log.info(MegaBonusParser.class.getSimpleName() + " is working");
         List<Shop> result = new ArrayList<>();
-        //Нужно указать путь к драйверу. Сам драйвер располагается в корне папки с программой
-        try {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_win32/chromedriver.exe");
-        } catch (Exception e) {
-            log.error(e);
-        }
         WebDriver driver = new ChromeDriver();
         driver.navigate().to(addressForParsing);
         WebElement button = driver.findElement(By.className("see-more"));
@@ -123,11 +117,11 @@ public class MegaBonusParser implements ParserInterface {
     private Double getDiscount(String fullDiscount) {
         String discount = "";
         Matcher matcher = patternForDiscount.matcher(fullDiscount);
-        if (matcher.find()) {
+        while (matcher.find()) {
             discount = matcher.group();
         }
         try {
-            Double trueDiscount = Double.parseDouble(discount);
+            Double trueDiscount = Double.parseDouble(discount.replace(',', '.'));
             return trueDiscount;
         } catch (NumberFormatException e) {
             log.error(e);

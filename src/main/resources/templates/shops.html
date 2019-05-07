@@ -30,6 +30,8 @@
                     <th sec:authorize="hasAuthority('ADMIN')">Обновить таблицу</th>
                     <th>Упорядочить по возрастанию скидки</th>
                     <th>Упорядочить по убыванию скидки</th>
+                    <th>Сохранить данные в Excel</th>
+                    <th>Сохранить данные в CSV</th>
                 </tr>
                 <tr>
                     <td sec:authorize="hasAuthority('ADMIN')">
@@ -45,6 +47,16 @@
                     <td>
                         <form method="get" th:action="@{/shops/orderByDiscountDesc}">
                             <input type="submit" value="Order">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" th:action="@{/excel}">
+                            <input type="submit" value="Save in Excel">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" th:action="@{/csv}">
+                            <input type="submit" value="Save in CSV">
                         </form>
                     </td>
                 </tr>

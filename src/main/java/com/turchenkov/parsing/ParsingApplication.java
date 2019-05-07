@@ -15,6 +15,11 @@ public class ParsingApplication {
 
     public static void main(String[] args) {
         BasicConfigurator.configure();
+        try {
+            System.setProperty("webdriver.chrome.driver", "chromedriver_win32/chromedriver.exe");
+        } catch (Exception e) {
+            log.error(e);
+        }
         SpringApplication.run(ParsingApplication.class, args);
 
 //        HtmlUnitComparing htmlUnitComparing = new HtmlUnitComparing();
