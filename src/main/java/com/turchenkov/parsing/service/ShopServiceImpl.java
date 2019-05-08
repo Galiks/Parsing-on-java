@@ -1,5 +1,6 @@
 package com.turchenkov.parsing.service;
 
+import com.opencsv.CSVWriter;
 import com.turchenkov.parsing.domains.shop.Shop;
 import com.turchenkov.parsing.parsingmethods.ParserInterface;
 import com.turchenkov.parsing.repository.ShopRepository;
@@ -12,9 +13,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -100,17 +101,18 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void saveInCSVFile() throws IOException {
-        FileWriter csvWriter = new FileWriter("shopsOnCSV.csv");
-        for (Shop shop : getListOfShop()) {
-            String discount = String.valueOf(shop.getDiscount());
-            csvWriter.append(shop.getName()).append(", ")
-                    .append(discount).append(" ")
-                    .append(shop.getLabel()).append(", ")
-                    .append(shop.getPageOnTheSite()).append(", ")
-                    .append(shop.getImage()).append("\n");
+        try (FileOutputStream fileOutputStream = new FileOutputStream("shopsOnCSV.csv")) {
+            Writer fileWriter = new OutputStreamWriter(fileOutputStream,
+                    StandardCharsets.UTF_8);
+            CSVWriter csvWriter = new CSVWriter(fileWriter);
+            for (Shop shop : getListOfShop()) {
+                String discount = String.valueOf(shop.getDiscount());
+                String[] array = new String[]{shop.getName(), discount + " " + shop.getLabel(), shop.getPageOnTheSite(), shop.getImage()};
+                csvWriter.writeNext(array);
+            }
+            csvWriter.flush();
+            csvWriter.close();
         }
-        csvWriter.flush();
-        csvWriter.close();
     }
 
 

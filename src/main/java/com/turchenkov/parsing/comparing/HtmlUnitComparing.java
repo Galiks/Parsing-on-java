@@ -1,7 +1,6 @@
 package com.turchenkov.parsing.comparing;
 
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -27,23 +26,16 @@ import java.util.stream.Stream;
 //Время: 119 секунд
 public class HtmlUnitComparing {
 
-    private  WebClient webClient;
-    private  Pattern patternForLabel;
-    private  ExecutorService pool;
-
-    public HtmlUnitComparing() {
-        patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
-        pool = Executors.newFixedThreadPool(4);
-    }
+    private final static Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
+    private static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     @ConsoleTimer
-    public void main() throws IOException {
+    public static void main(String[] args) throws IOException {
         Long startTime = System.currentTimeMillis();
         List<Future<List<Shop>>> futures = new ArrayList<>();
-        webClient = new WebClient();
+        WebClient webClient = new WebClient();
         webClient.getOptions().setThrowExceptionOnScriptError(false);
         webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-        parseElements(1);
         for (int i = 1; i <= getMaxPage(webClient); i++) {
             int finalI = i;
             futures.add(pool.submit(() -> parseElements(finalI)));
@@ -51,10 +43,13 @@ public class HtmlUnitComparing {
         List<Shop> pageResult = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
         pool.shutdown();
         Long endTime = System.currentTimeMillis();
-        System.out.println("Время: " + (endTime-startTime)/1000 + " секунд");
+        System.out.println("Время: " + (endTime - startTime) / 1000 + " секунд");
+        for (Shop shop : pageResult) {
+            System.out.println(shop);
+        }
     }
 
-    private Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
+    private static Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
         return it -> {
             try {
                 return it.get().stream();
@@ -65,52 +60,49 @@ public class HtmlUnitComparing {
         };
     }
 
-    private List<Shop> parseElements(int i) throws IOException {
-        try {
-            webClient = new WebClient();
-            webClient.getOptions().setThrowExceptionOnScriptError(false);
-            webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-            System.out.println("Номер страницы: " + i);
-            List<Shop> result = new ArrayList<>();
-            HtmlPage page = webClient.getPage("https://letyshops.com/shops?page=" + i);
+    private static List<Shop> parseElements(int i) throws IOException {
+        WebClient webClient = new WebClient();
+        webClient.getOptions().setThrowExceptionOnScriptError(false);
+        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        System.out.println("Номер страницы: " + i);
+        List<Shop> result = new ArrayList<>();
+        String url = "https://letyshops.com/shops?page=" + i;
+        HtmlPage page = webClient.getPage("https://letyshops.com/shops?page=1");
             DomNodeList<DomNode> domNodes = page.querySelectorAll("a.b-teaser__inner");
             for (DomNode domNode : domNodes) {
                 String name = getName(domNode);
                 String image = getImage(domNode);
                 Double discount = getDiscount(domNode);
                 String label = getLabel(domNode);
-                String url = getUrl(domNode);
+                String urlOfSite = getUrl(domNode);
                 if (name != null & image != null & (discount != Double.NaN & discount != 0) & label != null) {
-                    LetyShops letyShops = new LetyShops(name, discount, label, url, image);
+                    LetyShops letyShops = new LetyShops(name, discount, label, urlOfSite, image);
                     result.add(letyShops);
                 }
             }
             System.out.println(result.size());
-            return result;
-        } finally {
-            webClient.closeAllWindows();
-        }
+        return result;
     }
 
-    private String getUrl(DomNode domNode) {
+    private static String getUrl(DomNode domNode) {
         return domNode.getAttributes().item(2).getTextContent();
     }
 
-    private String getLabel(DomNode domNode) {
+    private static String getLabel(DomNode domNode) {
         String label;
         try {
             label = domNode.querySelector("div > span.b-shop-teaser__label.b-shop-teaser__label--red ").asText();
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             label = domNode.querySelector("div > div.b-shop-teaser__cash-value-row").asText();
         }
         Matcher matcher = patternForLabel.matcher(label);
-        if (matcher.find()){
+        if (matcher.find()) {
             return matcher.group();
         }
         return "";
     }
 
-    private Double getDiscount(DomNode domNode) {
+    private static Double getDiscount(DomNode domNode) {
         try {
             return Double.parseDouble(domNode.querySelector("div > span.b-shop-teaser__new-cash").asText());
         } catch (NullPointerException e) {
@@ -118,15 +110,15 @@ public class HtmlUnitComparing {
         }
     }
 
-    private String getImage(DomNode domNode) {
+    private static String getImage(DomNode domNode) {
         return domNode.querySelector("div.b-teaser__cover > img").getAttributes().item(0).getTextContent();
     }
 
-    private String getName(DomNode domNode) {
+    private static String getName(DomNode domNode) {
         return domNode.querySelector("div.b-teaser__title").asText();
     }
 
-    private int getMaxPage(WebClient webClient) throws IOException {
+    private static int getMaxPage(WebClient webClient) throws IOException {
         HtmlPage maxPage = webClient.getPage("https://letyshops.com/shops?page=1");
         DomNodeList<DomNode> pages = maxPage.querySelectorAll("a.b-pagination__link");
         return Integer.parseInt(pages.item(pages.size() - 2).getTextContent());

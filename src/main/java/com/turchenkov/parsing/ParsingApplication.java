@@ -21,12 +21,6 @@ public class ParsingApplication {
             log.error(e);
         }
         SpringApplication.run(ParsingApplication.class, args);
-
-//        HtmlUnitComparing htmlUnitComparing = new HtmlUnitComparing();
-//        htmlUnitComparing.main();
-
-//        MegaBonusParserWithCookie megaBonusParserWithCookie = new MegaBonusParserWithCookie();
-//        megaBonusParserWithCookie.parsing();
     }
 }
 
