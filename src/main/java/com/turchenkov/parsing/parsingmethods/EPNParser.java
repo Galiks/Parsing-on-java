@@ -33,6 +33,7 @@ public class EPNParser implements ParserInterface {
 
     private final Pattern patternForDiscount = Pattern.compile("\\d+[.|,]*\\d*");
     private final Pattern patternForLabel = Pattern.compile("[$%€]|руб|(р.)|cent");
+    private final Pattern[] patternsForName;
     private final ExecutorService pool;
     @Value("${parsing.site.epn}")
     private String addressOfSite;
@@ -48,6 +49,13 @@ public class EPNParser implements ParserInterface {
     public EPNParser() {
         int THREADS = Runtime.getRuntime().availableProcessors();
         this.pool = Executors.newFixedThreadPool(THREADS);
+        patternsForName = new Pattern[]{
+                Pattern.compile("Покупки в «([\\w\\s\\d\\W]+)»"),
+                Pattern.compile("Купить в ([\\w\\s\\d\\W]+) с офлайн"),
+                Pattern.compile("([\\w\\s\\d\\W]+) купить с кэшбэком"),
+                Pattern.compile("Купить в ([\\w\\s\\d\\W]+) с кэшбэком"),
+                Pattern.compile("([\\w\\s\\d\\W]+) \\| ePN Cashback"),
+        };
     }
 
     @Timer
@@ -153,7 +161,7 @@ public class EPNParser implements ParserInterface {
 
     private Double getDiscount(String url) {
         try {
-            String element = Jsoup.connect(url).userAgent(userAgent).post().select("header.offer-aside__header").select("span.offer-aside__info-percent").first().text();
+            String element = Jsoup.connect(url).userAgent(userAgent).post().getElementsByClass("offer-aside__info-percent").get(0).text();
             String discount = "";
             Matcher discountMatcher = patternForDiscount.matcher(element);
             while (discountMatcher.find()) {
@@ -172,6 +180,22 @@ public class EPNParser implements ParserInterface {
 
     //избавиться от магического числа 33 - количество символов, после которых начинается имя сайта, так как на сайте нет имени, а только картинка
     private String getName(String url) {
-        return url.toUpperCase().charAt(33) + url.substring(34, url.length() - 1);
+        String element = null;
+        try {
+            element = Jsoup.connect(url).userAgent(userAgent).post().selectFirst("head > title").text();
+        } catch (IOException e) {
+            log.error(String.valueOf(e));
+        }
+        Matcher matcher;
+        if (element != null) {
+            for (Pattern pattern : patternsForName) {
+                matcher = pattern.matcher(element);
+                if (matcher.find()) {
+                    return matcher.group(1);
+                }
+            }
+        }
+        log.info(element);
+        return null;
     }
 }

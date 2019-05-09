@@ -4,6 +4,7 @@ import com.opencsv.CSVWriter;
 import com.turchenkov.parsing.domains.shop.Shop;
 import com.turchenkov.parsing.parsingmethods.ParserInterface;
 import com.turchenkov.parsing.repository.ShopRepository;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -23,6 +24,10 @@ public class ShopServiceImpl implements ShopService {
 
     private static final Logger log = Logger.getLogger(ShopServiceImpl.class);
 
+    private ShopServiceImpl(){
+        BasicConfigurator.configure();
+    }
+
     @Autowired
     ShopRepository shopRepository;
 
@@ -34,7 +39,11 @@ public class ShopServiceImpl implements ShopService {
         for (ParserInterface parser : this.parsers) {
             for (Shop shop : parser.parsing()) {
               if (shop != null){
-                  shopRepository.save(shop);
+                  try {
+                      shopRepository.save(shop);
+                  } catch (Exception e) {
+                      log.error(e + " : " + shop);
+                  }
               }
             }
         }

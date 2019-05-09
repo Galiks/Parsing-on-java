@@ -25,7 +25,6 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
 public class MegaBonusParser implements ParserInterface {
 
     private static final Logger log = Logger.getLogger(MegaBonusParser.class);
