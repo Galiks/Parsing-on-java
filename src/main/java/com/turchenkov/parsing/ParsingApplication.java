@@ -1,6 +1,9 @@
 package com.turchenkov.parsing;
 
 
+import com.turchenkov.parsing.domains.shop.Shop;
+import com.turchenkov.parsing.parsingmethods.UnirestLetyShopsParser;
+import lombok.var;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +23,13 @@ public class ParsingApplication {
         } catch (Exception e) {
             log.error(e);
         }
-        SpringApplication.run(ParsingApplication.class, args);
+//        SpringApplication.run(ParsingApplication.class, args);
+        UnirestLetyShopsParser unirestLetyShopsParser = new UnirestLetyShopsParser();
+        var list =  unirestLetyShopsParser.parsing();
+        System.out.println(list.size());
+//        for (Shop shop : list) {
+//            System.out.println(shop);
+//        }
     }
 }
 

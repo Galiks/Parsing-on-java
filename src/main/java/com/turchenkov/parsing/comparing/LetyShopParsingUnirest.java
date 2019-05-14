@@ -6,6 +6,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.domains.shop.LetyShops;
 import com.turchenkov.parsing.domains.shop.Shop;
 import com.turchenkov.parsing.parsingmethods.LetyShopsParser;
+import com.turchenkov.parsing.parsingmethods.ParserInterface;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,8 +28,7 @@ import java.util.stream.Stream;
 
 
 //5 секунд
-public class LetyShopParsingUnirest {
-
+public class LetyShopParsingUnirest implements ParserInterface {
 
     private static final Logger log = Logger.getLogger(LetyShopsParser.class);
     private static Pattern patternForDiscount;
@@ -42,16 +42,8 @@ public class LetyShopParsingUnirest {
     }
 
     public static void main(String[] args) {
-        List<Shop> result = new ArrayList<>();
-        List<Future<List<Shop>>> futures = new ArrayList<>();
         Long startTime = System.currentTimeMillis();
-        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        int maxPage = getMaxPage();
-        for (int i = 1; i <= maxPage; i++) {
-            final int finalI = i;
-            futures.add(pool.submit(() -> parsElements(finalI)));
-        }
-        result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
+
         Long endTime = System.currentTimeMillis();
         System.out.println((endTime - startTime) / 1000);
     }
@@ -72,8 +64,9 @@ public class LetyShopParsingUnirest {
                 .header("User-Agent", "PostmanRuntime/7.11.0")
                 .header("Accept", "*/*")
                 .header("Cache-Control", "no-cache")
-                .header("Postman-Token", "6e8b5bf8-c735-49cc-89fd-8af5fcbd76ac,d4361b44-415a-4adf-b751-dce1d24183ff")
+                .header("Postman-Token", "03d403a9-0fb6-4893-826c-6f67e5b323e1,e4d3ee09-6a43-4d38-9242-11d564a09454")
                 .header("Host", "letyshops.com")
+                .header("cookie", "hl=ru_RU; country=RU%3A0; lsvtkn=d7ca64e7165cfd3175dddfa1cc11bf15")
                 .header("accept-encoding", "gzip, deflate")
                 .header("Connection", "keep-alive")
                 .header("cache-control", "no-cache")
@@ -141,5 +134,22 @@ public class LetyShopParsingUnirest {
             log.error(e);
             return 0;
         }
+    }
+
+    @Override
+    public List<Shop> parsing() {
+        List<Shop> result = new ArrayList<>();
+        List<Future<List<Shop>>> futures = new ArrayList<>();
+        Long startTime = System.currentTimeMillis();
+        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        int maxPage = getMaxPage();
+        for (int i = 1; i <= maxPage; i++) {
+            final int finalI = i;
+            futures.add(pool.submit(() -> parsElements(finalI)));
+        }
+        result = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
+        Long endTime = System.currentTimeMillis();
+        System.out.println((endTime - startTime) / 1000);
+        return result;
     }
 }
