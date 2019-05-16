@@ -10,6 +10,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @ComponentScan
 @SpringBootApplication
 public class ParsingApplication {
@@ -23,13 +27,7 @@ public class ParsingApplication {
         } catch (Exception e) {
             log.error(e);
         }
-//        SpringApplication.run(ParsingApplication.class, args);
-        UnirestLetyShopsParser unirestLetyShopsParser = new UnirestLetyShopsParser();
-        var list =  unirestLetyShopsParser.parsing();
-        System.out.println(list.size());
-//        for (Shop shop : list) {
-//            System.out.println(shop);
-//        }
+        SpringApplication.run(ParsingApplication.class, args);
     }
 }
 

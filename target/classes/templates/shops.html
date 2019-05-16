@@ -32,6 +32,7 @@
                     <th>Упорядочить по убыванию скидки</th>
                     <th>Сохранить данные в Excel</th>
                     <th>Сохранить данные в CSV</th>
+                    <th>Сохранить данные о времени в Excel</th>
                 </tr>
                 <tr>
                     <td sec:authorize="hasAuthority('ADMIN')">
@@ -57,6 +58,11 @@
                     <td>
                         <form method="post" th:action="@{/csv}">
                             <input type="submit" value="Save in CSV">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" th:action="@{/timer}">
+                            <input type="submit" value="Save time in Excel">
                         </form>
                     </td>
                 </tr>

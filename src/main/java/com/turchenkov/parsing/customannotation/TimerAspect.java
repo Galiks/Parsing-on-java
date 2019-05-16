@@ -9,6 +9,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
@@ -26,8 +28,8 @@ public class TimerAspect {
         Long startTime = System.currentTimeMillis();
         Object proceed = joinPoint.proceed();
         Long endTime = System.currentTimeMillis();
-        timerRepository.save(new Timer(joinPoint.getTarget().toString(), (endTime-startTime), new Date().toString()));
-        timerService.saveInExcelFile();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
+        timerRepository.save(new Timer(joinPoint.getTarget().toString(), (endTime-startTime), dateFormat.format(new Date())));
         return proceed;
 
     }

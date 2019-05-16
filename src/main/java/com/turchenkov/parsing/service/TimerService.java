@@ -5,4 +5,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface TimerService {
     void saveInExcelFile();
+    void deleteAllFromDB();
 }

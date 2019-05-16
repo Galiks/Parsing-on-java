@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
+
 public class Cash4BrandsParser implements ParserInterface {
 
     private static final Logger log = Logger.getLogger(Cash4BrandsParser.class);

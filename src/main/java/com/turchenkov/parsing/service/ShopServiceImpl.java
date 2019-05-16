@@ -13,9 +13,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -24,27 +28,28 @@ public class ShopServiceImpl implements ShopService {
 
     private static final Logger log = Logger.getLogger(ShopServiceImpl.class);
 
-    private ShopServiceImpl(){
-        BasicConfigurator.configure();
-    }
-
+    private static final String filePathForShopsInCSV = "E:\\Документы\\GitHub\\Parsing-on-java\\src\\main\\java\\com\\turchenkov\\parsing\\files\\shopsOnCSV.csv";
+    private static final String filePathForShopsInExcel = "E:\\Документы\\GitHub\\Parsing-on-java\\src\\main\\java\\com\\turchenkov\\parsing\\files\\shops.xls";
     @Autowired
     ShopRepository shopRepository;
-
     @Autowired
     private List<ParserInterface> parsers;
+
+    private ShopServiceImpl() {
+        BasicConfigurator.configure();
+    }
 
     @Override
     public void parsingAndSaveInDB() {
         for (ParserInterface parser : this.parsers) {
             for (Shop shop : parser.parsing()) {
-              if (shop != null){
-                  try {
-                      shopRepository.save(shop);
-                  } catch (Exception e) {
-                      log.error(e + " : " + shop);
-                  }
-              }
+                if (shop != null) {
+                    try {
+                        shopRepository.save(shop);
+                    } catch (Exception e) {
+                        log.error(e + " : " + shop);
+                    }
+                }
             }
         }
     }
@@ -80,15 +85,21 @@ public class ShopServiceImpl implements ShopService {
     public void saveInExcelFile() {
         Workbook book = new HSSFWorkbook();
         Sheet sheet = book.createSheet("Shops");
+        Row row = sheet.createRow(0);
+        row.createCell(0).setCellValue("НАЗВАНИЕ");
+        row.createCell(1).setCellValue("ЗНАЧЕНИЕ КЭШБЭКА");
+        row.createCell(2).setCellValue("ВАЛЮТА");
+        row.createCell(3).setCellValue("КАРТИНКА МАГАЗИНА");
+        row.createCell(4).setCellValue("АДРЕС МАГАЗИНА");
         int i = 1;
         for (Shop shop : getListOfShop()) {
-            if (shop!=null){
-                Row row = sheet.createRow(i);
+            if (shop != null) {
+                row = sheet.createRow(i);
                 Cell name = row.createCell(0);
                 Cell discount = row.createCell(1);
                 Cell label = row.createCell(2);
-                Cell url= row.createCell(3);
-                Cell image = row.createCell(4);
+                Cell image = row.createCell(3);
+                Cell url = row.createCell(4);
                 name.setCellValue(shop.getName());
                 discount.setCellValue(shop.getDiscount());
                 label.setCellValue(shop.getLabel());
@@ -98,10 +109,10 @@ public class ShopServiceImpl implements ShopService {
             i++;
         }
         try {
-            for(int columnPosition = 0; columnPosition < 7; columnPosition++) {
+            for (int columnPosition = 0; columnPosition < 7; columnPosition++) {
                 sheet.autoSizeColumn((short) (columnPosition));
             }
-            book.write(new FileOutputStream("shops.xls"));
+            book.write(new FileOutputStream(filePathForShopsInExcel));
             book.close();
         } catch (IOException e) {
             log.error(e);
@@ -110,7 +121,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void saveInCSVFile() throws IOException {
-        try (FileOutputStream fileOutputStream = new FileOutputStream("shopsOnCSV.csv")) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePathForShopsInCSV)) {
             Writer fileWriter = new OutputStreamWriter(fileOutputStream,
                     StandardCharsets.UTF_8);
             CSVWriter csvWriter = new CSVWriter(fileWriter);
@@ -123,6 +134,4 @@ public class ShopServiceImpl implements ShopService {
             csvWriter.close();
         }
     }
-
-
 }

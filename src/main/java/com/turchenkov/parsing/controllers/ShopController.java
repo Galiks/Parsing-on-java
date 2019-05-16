@@ -1,7 +1,7 @@
 package com.turchenkov.parsing.controllers;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.service.ShopServiceImpl;
+import com.turchenkov.parsing.service.TimerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +14,14 @@ import java.io.IOException;
 public class ShopController {
 
     @Autowired
-    private ShopServiceImpl service;
+    private ShopServiceImpl shopService;
+
+    @Autowired
+    private TimerServiceImpl timerService;
 
     @GetMapping("/shops")
     public String allReportsGet(Model model) {
-        model.addAttribute("shops", service.getListOfShop());
+        model.addAttribute("shops", shopService.getListOfShop());
         return "shops";
     }
 
@@ -29,31 +32,38 @@ public class ShopController {
 
     @PostMapping("/update")
     public String updateShopsPost() {
-        service.update();
+        timerService.deleteAllFromDB();
+        shopService.update();
         return "redirect:/shops";
     }
 
     @GetMapping("/shops/orderByDiscount")
     public String orderByDiscountGet(Model model) {
-        model.addAttribute("shops", service.orderByDiscount());
+        model.addAttribute("shops", shopService.orderByDiscount());
         return "shops";
     }
 
     @GetMapping("/shops/orderByDiscountDesc")
     public String orderByDiscountDescGet(Model model) {
-        model.addAttribute("shops", service.orderByDiscountDesc());
+        model.addAttribute("shops", shopService.orderByDiscountDesc());
         return "shops";
     }
 
     @PostMapping("/excel")
     public String saveShopsInExcelFile(){
-        service.saveInExcelFile();
+        shopService.saveInExcelFile();
         return "redirect:/shops";
     }
 
     @PostMapping("/csv")
     public String saveShopsInCSVFile() throws IOException {
-        service.saveInCSVFile();
+        shopService.saveInCSVFile();
+        return "redirect:/shops";
+    }
+
+    @PostMapping("/timer")
+    public String saveTimersInExcelFile(){
+        timerService.saveInExcelFile();
         return "redirect:/shops";
     }
 }
