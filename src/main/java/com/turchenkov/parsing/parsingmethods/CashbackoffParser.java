@@ -69,9 +69,6 @@ public class CashbackoffParser implements ParserInterface {
 
     private Shop parseElements(Element element) {
         String name = getName(element);
-        if (name.equals("М.Видео")){
-            System.out.println("HEY!");
-        }
         Double discount = getDiscount(getFullDiscount(element));
         String label = getLabel(getFullDiscount(element));
         String shopPage = getShopPage(element);

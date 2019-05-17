@@ -14,7 +14,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,10 +41,20 @@ public class KopikotParser implements ParserInterface {
         List<Shop> result = new ArrayList<>();
         List<Future<List<Shop>>> futures = new ArrayList<>();
         HttpResponse<String> response = null;
-        for (int i = 0; i <= 1300; i += 100) {
+//        Map<String, String> header = new HashMap<>();
+//        header.put("User-Agent", "PostmanRuntime/7.11.0");
+//        header.put("Accept", "*/*");
+//        header.put("Cache-Control", "no-cache");
+//        header.put("Postman-Token", "ac6a192d-72f5-4238-9321-55c1308e9846,09ec761f-7c53-4696-bf5a-dc44918e73c5");
+//        header.put("Host", "d289b99uqa0t82.cloudfront.net");
+//        header.put("accept-encoding", "gzip, deflate");
+//        header.put("Connection", "keep-alive");
+//        header.put("cache-control", "no-cache");
+        for (int i = 0; i <= 2000; i += 100) {
             String url = "https://d289b99uqa0t82.cloudfront.net/sites/5/campaigns_limit_100_offset_" + i + "_order_popularity.json";
             try {
                 response = Unirest.get(url)
+//                        .headers(header)
                         .header("User-Agent", "PostmanRuntime/7.11.0")
                         .header("Accept", "*/*")
                         .header("Cache-Control", "no-cache")
@@ -54,6 +66,7 @@ public class KopikotParser implements ParserInterface {
                         .asString();
             } catch (UnirestException e) {
                 log.error(e + " : " + i);
+                break;
             }
             HttpResponse<String> finalResponse = response;
             if (finalResponse != null) {

@@ -52,7 +52,7 @@ public class WebDriverMegaBonusParser implements ParserInterface {
         List<Shop> result = new ArrayList<>();
         List<Future<Shop>> futures = new ArrayList<>();
         WebDriver driver = new ChromeDriver();
-        driver.navigate().to(addressForParsing);
+        driver.get(addressForParsing);
         WebElement button = driver.findElement(By.className("see-more"));
         while (button.isDisplayed()) {
             try {
