@@ -20,7 +20,6 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//67 секунд
 @Component
 public class WebDriverMegaBonusParser implements ParserInterface {
     private static final Logger log = Logger.getLogger(WebDriverMegaBonusParser.class);

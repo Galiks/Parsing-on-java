@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+@Component
 public class EPNParser implements ParserInterface {
 
     private static final Logger log = Logger.getLogger(EPNParser.class);

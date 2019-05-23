@@ -31,22 +31,23 @@ public class HtmlUnitComparing {
 
     @ConsoleTimer
     public static void main(String[] args) throws IOException {
-        Long startTime = System.currentTimeMillis();
-        List<Future<List<Shop>>> futures = new ArrayList<>();
         WebClient webClient = new WebClient();
-        webClient.getOptions().setThrowExceptionOnScriptError(false);
-        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-        for (int i = 1; i <= getMaxPage(webClient); i++) {
-            int finalI = i;
-            futures.add(pool.submit(() -> parseElements(finalI)));
-        }
-        List<Shop> pageResult = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
-        pool.shutdown();
-        Long endTime = System.currentTimeMillis();
-        System.out.println("Время: " + (endTime - startTime) / 1000 + " секунд");
-        for (Shop shop : pageResult) {
-            System.out.println(shop);
-        }
+//        webClient.getOptions().setThrowExceptionOnScriptError(false);
+//        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        HtmlPage maxPage = webClient.getPage("https://letyshops.com/shops?page=1");
+//        Long startTime = System.currentTimeMillis();
+//        List<Future<List<Shop>>> futures = new ArrayList<>();
+//        for (int i = 1; i <= getMaxPage(); i++) {
+//            int finalI = i;
+//            futures.add(pool.submit(() -> parseElements(finalI)));
+//        }
+//        List<Shop> pageResult = futures.stream().flatMap(getFutureStream()).collect(Collectors.toList());
+//        pool.shutdown();
+//        Long endTime = System.currentTimeMillis();
+//        System.out.println("Время: " + (endTime - startTime) / 1000 + " секунд");
+//        for (Shop shop : pageResult) {
+//            System.out.println(shop);
+//        }
     }
 
     private static Function<Future<List<Shop>>, Stream<? extends Shop>> getFutureStream() {
@@ -67,7 +68,7 @@ public class HtmlUnitComparing {
         System.out.println("Номер страницы: " + i);
         List<Shop> result = new ArrayList<>();
         String url = "https://letyshops.com/shops?page=" + i;
-        HtmlPage page = webClient.getPage("https://letyshops.com/shops?page=1");
+        HtmlPage page = webClient.getPage(url);
             DomNodeList<DomNode> domNodes = page.querySelectorAll("a.b-teaser__inner");
             for (DomNode domNode : domNodes) {
                 String name = getName(domNode);
@@ -118,7 +119,10 @@ public class HtmlUnitComparing {
         return domNode.querySelector("div.b-teaser__title").asText();
     }
 
-    private static int getMaxPage(WebClient webClient) throws IOException {
+    private static int getMaxPage() throws IOException {
+        WebClient webClient = new WebClient();
+        webClient.getOptions().setThrowExceptionOnScriptError(false);
+        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
         HtmlPage maxPage = webClient.getPage("https://letyshops.com/shops?page=1");
         DomNodeList<DomNode> pages = maxPage.querySelectorAll("a.b-pagination__link");
         return Integer.parseInt(pages.item(pages.size() - 2).getTextContent());

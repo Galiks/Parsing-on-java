@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+@Component
 public class Cash4BrandsParser implements ParserInterface {
 
     private static final Logger log = Logger.getLogger(Cash4BrandsParser.class);
@@ -80,7 +80,7 @@ public class Cash4BrandsParser implements ParserInterface {
         String image = getImage(element);
         String name = getName(element);
         String fullDiscount = element.getElementsByClass("ufp_bonus").text();
-        if (fullDiscount == null){
+        if (fullDiscount == null) {
             return null;
         }
         String label = getLabel(fullDiscount);
@@ -108,7 +108,7 @@ public class Cash4BrandsParser implements ParserInterface {
         pool.shutdown();
     }
 
-    private String getLabel(String fullDiscount){
+    private String getLabel(String fullDiscount) {
         Matcher labelMatcher = patternForLabel.matcher(fullDiscount);
         if (labelMatcher.find()) {
             return labelMatcher.group();
@@ -119,13 +119,13 @@ public class Cash4BrandsParser implements ParserInterface {
     private Double getDiscount(String fullDiscount) {
         Matcher discountMatcher = patternForDiscount.matcher(fullDiscount);
         String discount = "";
-        while (discountMatcher.find()){
+        while (discountMatcher.find()) {
             discount = discountMatcher.group();
         }
         try {
             return Double.valueOf(discount.replace(',', '.'));
-        }catch (NumberFormatException e){
-           log.error(e);
+        } catch (NumberFormatException e) {
+            log.error(e);
         }
         return Double.NaN;
     }

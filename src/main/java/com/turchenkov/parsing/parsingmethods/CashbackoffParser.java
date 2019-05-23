@@ -1,8 +1,5 @@
 package com.turchenkov.parsing.parsingmethods;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.turchenkov.parsing.customannotation.Timer;
 import com.turchenkov.parsing.domains.shop.Cashbackoff;
 import com.turchenkov.parsing.domains.shop.Shop;
@@ -16,8 +13,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Tuple;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -27,7 +22,7 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+@Component
 public class CashbackoffParser implements ParserInterface {
 
     private static final Logger log = Logger.getLogger(CashbackoffParser.class);
